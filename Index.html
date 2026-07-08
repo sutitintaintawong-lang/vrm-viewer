@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI E-Service</title>
+
+<?!= include('Style'); ?>
+
+</head>
+
+<body>
+
+<div class="main-layout">
+
+    <!-- =======================
+         LEFT : AVATAR
+    ======================== -->
+
+    <div class="avatar-panel">
+
+<iframe
+    src="<?= ScriptApp.getService().getUrl(); ?>?page=avatar"
+    style="width:100%;height:100%;border:none;">
+</iframe>
+
+    </div>
+
+    <!-- =======================
+         RIGHT : CHAT
+    ======================== -->
+
+    <div class="chat-panel">
+
+        <div class="app">
+
+            <!-- Header -->
+
+            <div class="header">
+
+                <div class="logo-box">
+
+                    <img
+                    src="https://www.maepao.go.th/assets/images/logo_Gov/logo_180px_border.png"
+                    class="logo">
+
+                </div>
+
+                <div>
+
+                    <h2>น้องฟ้าใส AI E-Service</h2>
+
+                    <div class="sub-title">
+                        อบต.แม่เปา
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Menu -->
+
+            <div class="menu-bar">
+
+                <button onclick="showChat()">
+                    💬 Chat
+                </button>
+
+                <button onclick="showDashboard()">
+                    📊 Dashboard
+                </button>
+
+            </div>
+
+            <!-- CHAT PAGE -->
+
+            <div id="chatPage">
+
+                <div
+                id="chatContainer"
+                class="chat-container">
+
+                    <div class="bot-message">
+
+                        👋 สวัสดีค่ะ
+
+                        น้องฟ้าใส ผู้ช่วยของ
+                        อบต.แม่เปา
+
+                        สามารถสอบถามข้อมูลได้เลยค่ะ
+
+                    </div>
+
+                </div>
+
+                <div class="input-area">
+
+                    <textarea
+                    id="question"
+                    placeholder="พิมพ์คำถามของคุณ..."
+                    rows="2"></textarea>
+
+                    <div style="display:flex;gap:10px;">
+
+                        <button onclick="startVoice()">
+                            🎤
+                        </button>
+
+                        <button
+                        id="sendBtn"
+                        onclick="sendQuestion()">
+                            ส่ง
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- DASHBOARD PAGE -->
+
+            <div
+            id="dashboardPage"
+            style="display:none;">
+
+                <?!= include('Dashboard'); ?>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<?!= include('Script'); ?>
+
+</body>
+
+</html>
