@@ -216,4 +216,16 @@ font-size:17px;
     font-size:14px;
     color:#666;
 }
+#avatarContainer{
+    width:100%;
+    height:420px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+#avatarCanvas{
+    width:100%;
+    height:100%;
+}   
 }
