@@ -1,93 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VRM Viewer</title>
-<style>
-html,body{margin:0;overflow:hidden;background:#20242d;font-family:Arial,sans-serif}
-#loading{position:absolute;top:20px;left:20px;color:#fff;background:rgba(0,0,0,.5);padding:10px 15px;border-radius:10px}
-</style>
-<script type="importmap">
-{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js"}}
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI E-Service</title>
+
+    <meta name="theme-color" content="#0d6efd">
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="icon" href="icons/icon-192.png">
+
 </head>
+
 <body>
-<div id="loading">Loading VRM...</div>
-<script type="module">
-import * as THREE from "three";
-import { OrbitControls } from "https://unpkg.com/three@0.160.0/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "https://unpkg.com/three@0.160.0/examples/jsm/loaders/GLTFLoader.js";
-import { VRMLoaderPlugin } from "https://unpkg.com/@pixiv/three-vrm@2.1.1/lib/three-vrm.module.js";
 
-let currentVRM=null;
-let talking=false;
-const clock=new THREE.Clock();
+<header>
+    <h1>🏛 AI E-Service</h1>
+    <p>องค์การบริหารส่วนตำบลแม่สลองนอก</p>
+</header>
 
-const scene=new THREE.Scene();
-scene.background=new THREE.Color(0x87ceeb);
-const camera=new THREE.PerspectiveCamera(35,innerWidth/innerHeight,0.1,100);
-camera.position.set(0,1.4,3);
-const renderer=new THREE.WebGLRenderer({antialias:true});
-renderer.setSize(innerWidth,innerHeight);
-renderer.setPixelRatio(devicePixelRatio);
-document.body.appendChild(renderer.domElement);
+<div class="container">
 
-const controls=new OrbitControls(camera,renderer.domElement);
-controls.target.set(0,1.3,0); controls.update();
-scene.add(new THREE.DirectionalLight(0xffffff,2).position.set(1,1,1).parent||new THREE.Object3D());
+    <button onclick="openChat()">🤖 AI ผู้ช่วย</button>
 
-const d=new THREE.DirectionalLight(0xffffff,2); d.position.set(1,1,1); scene.add(d);
-scene.add(new THREE.AmbientLight(0xffffff,1.5));
+    <button onclick="alert('ระบบแจ้งเหตุ')">
+        🚨 แจ้งเหตุฉุกเฉิน
+    </button>
 
-const loader=new GLTFLoader();
-loader.register(parser=>new VRMLoaderPlugin(parser));
-loader.load("./avatar.vrm",(gltf)=>{
- currentVRM=gltf.userData.vrm;
- scene.add(currentVRM.scene);
- loading.style.display="none";
-});
+    <button onclick="alert('ระบบยื่นคำร้อง')">
+        📄 ยื่นคำร้องออนไลน์
+    </button>
 
-function speak(text){
- const u=new SpeechSynthesisUtterance(text);
- u.lang="th-TH";
- u.onstart=()=>talking=true;
- u.onend=()=>{talking=false; currentVRM?.expressionManager?.setValue("aa",0);}
- speechSynthesis.speak(u);
+    <button onclick="alert('ตรวจสอบสถานะคำร้อง')">
+        📋 ตรวจสอบคำร้อง
+    </button>
+
+    <button onclick="alert('ติดต่อ อบต.')">
+        ☎ ติดต่อเจ้าหน้าที่
+    </button>
+
+</div>
+
+<div id="chatBox" class="chat">
+    <h2>AI Assistant</h2>
+
+    <div id="messages"></div>
+
+    <input
+        id="userInput"
+        placeholder="พิมพ์คำถาม..."
+    >
+
+    <button onclick="sendMessage()">ส่ง</button>
+
+</div>
+
+<script src="app.js"></script>
+
+<script>
+
+if('serviceWorker' in navigator){
+
+navigator.serviceWorker.register('service-worker.js');
+
 }
-window.speak=speak;
 
-document.addEventListener("mousemove",e=>{
- if(!currentVRM) return;
- const h=currentVRM.humanoid.getNormalizedBoneNode("head");
- if(!h) return;
- h.rotation.y=(e.clientX/innerWidth-0.5)*0.5;
- h.rotation.x=(e.clientY/innerHeight-0.5)*0.2;
-});
-
-function animate(){
- requestAnimationFrame(animate);
- const dt=clock.getDelta(), t=clock.elapsedTime;
- if(currentVRM){
-   currentVRM.update(dt);
-   currentVRM.scene.position.y=Math.sin(t*2)*0.015;
-   currentVRM.scene.rotation.y=Math.sin(t)*0.05;
-   const head=currentVRM.humanoid.getNormalizedBoneNode("head");
-   if(head) head.rotation.x+=Math.sin(t*2)*0.0005;
-   const arm=currentVRM.humanoid.getNormalizedBoneNode("rightUpperArm");
-   if(arm) arm.rotation.z=Math.sin(t*3)*0.2;
-   if(currentVRM.expressionManager){
-      currentVRM.expressionManager.setValue("blink",(Math.sin(t*4)>0.98)?1:0);
-      currentVRM.expressionManager.setValue("aa",talking?(0.3+Math.random()*0.7):0);
-   }
- }
- renderer.render(scene,camera);
-}
-animate();
-addEventListener("resize",()=>{
- camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
- renderer.setSize(innerWidth,innerHeight);
-});
 </script>
+
 </body>
 </html>
