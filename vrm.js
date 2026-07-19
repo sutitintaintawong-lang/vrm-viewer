@@ -259,3 +259,130 @@ function setupAvatar() {
     );
 
 }
+// -----------------------------
+// Animation
+// -----------------------------
+
+function updateIdleMotion(time) {
+
+    if (!currentVRM) return;
+
+    const neck =
+        currentVRM.humanoid?.getNormalizedBoneNode("neck");
+
+    const spine =
+        currentVRM.humanoid?.getNormalizedBoneNode("spine");
+
+    const chest =
+        currentVRM.humanoid?.getNormalizedBoneNode("chest");
+
+    if (neck) {
+
+        neck.rotation.x =
+            Math.sin(time * 1.5) * 0.03;
+
+        neck.rotation.z =
+            Math.cos(time * 1.3) * 0.02;
+
+    }
+
+    if (spine) {
+
+        spine.rotation.z =
+            Math.sin(time * 0.8) * 0.015;
+
+    }
+
+    if (chest) {
+
+        chest.rotation.x =
+            Math.sin(time * 1.2) * 0.01;
+
+    }
+
+}
+
+// -----------------------------
+// Render Loop
+// -----------------------------
+
+function animate() {
+
+    requestAnimationFrame(animate);
+
+    const delta =
+        clock.getDelta();
+
+    const elapsed =
+        clock.elapsedTime;
+
+    controls.update();
+
+    if (currentVRM) {
+
+        currentVRM.update(delta);
+
+        updateIdleMotion(elapsed);
+
+    }
+
+    renderer.render(
+        scene,
+        camera
+    );
+
+}
+
+animate();
+
+
+// -----------------------------
+// Resize
+// -----------------------------
+
+window.addEventListener(
+
+    "resize",
+
+    () => {
+
+        renderer.setSize(
+            window.innerWidth,
+            420
+        );
+
+        camera.aspect =
+            window.innerWidth / 420;
+
+        camera.updateProjectionMatrix();
+
+    }
+
+);
+
+
+// -----------------------------
+// Mouse Tracking
+// -----------------------------
+
+window.addEventListener(
+
+    "mousemove",
+
+    (event) => {
+
+        mouseX =
+            (event.clientX /
+                window.innerWidth) *
+                2 -
+            1;
+
+        mouseY =
+            (event.clientY /
+                window.innerHeight) *
+                2 -
+            1;
+
+    }
+
+);
