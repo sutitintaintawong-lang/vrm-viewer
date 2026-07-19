@@ -386,3 +386,251 @@ window.addEventListener(
     }
 
 );
+// ======================================================
+// Part 3 : Lip Sync + Speak + AI Chat + Export
+// ======================================================
+
+let speechSynthesisUtterance = null;
+let isSpeaking = false;
+
+// ------------------------------------------------------
+// Lip Sync
+// ------------------------------------------------------
+
+function setMouth(value) {
+
+    if (!currentVrm) return;
+
+    const exp = currentVrm.expressionManager;
+
+    if (!exp) return;
+
+    value = Math.max(0, Math.min(1, value));
+
+    exp.setValue("aa", value);
+
+}
+
+function animateLipSync(duration = 2500) {
+
+    const start = performance.now();
+
+    function frame(now) {
+
+        if (!isSpeaking) {
+
+            setMouth(0);
+
+            return;
+
+        }
+
+        const t = (now - start);
+
+        const v =
+            Math.abs(Math.sin(t * 0.02)) * 0.8 +
+            Math.random() * 0.15;
+
+        setMouth(v);
+
+        requestAnimationFrame(frame);
+
+    }
+
+    requestAnimationFrame(frame);
+
+}
+
+// ------------------------------------------------------
+// Speak()
+// ------------------------------------------------------
+
+export function speak(text) {
+
+    return new Promise((resolve) => {
+
+        if (!("speechSynthesis" in window)) {
+
+            console.warn("Speech API not supported");
+
+            resolve();
+
+            return;
+
+        }
+
+        speechSynthesis.cancel();
+
+        speechSynthesisUtterance =
+            new SpeechSynthesisUtterance(text);
+
+        speechSynthesisUtterance.lang = "th-TH";
+
+        speechSynthesisUtterance.rate = 1;
+
+        speechSynthesisUtterance.pitch = 1;
+
+        speechSynthesisUtterance.volume = 1;
+
+        isSpeaking = true;
+
+        animateLipSync();
+
+        // ยิ้มเล็กน้อย
+
+        if (currentVrm?.expressionManager) {
+
+            currentVrm.expressionManager.setValue(
+                "happy",
+                0.25
+            );
+
+        }
+
+        speechSynthesisUtterance.onend = () => {
+
+            isSpeaking = false;
+
+            setMouth(0);
+
+            if (currentVrm?.expressionManager) {
+
+                currentVrm.expressionManager.setValue(
+                    "happy",
+                    0
+                );
+
+            }
+
+            resolve();
+
+        };
+
+        speechSynthesis.speak(
+            speechSynthesisUtterance
+        );
+
+    });
+
+}
+
+// ------------------------------------------------------
+// Stop Speak
+// ------------------------------------------------------
+
+export function stopSpeak() {
+
+    speechSynthesis.cancel();
+
+    isSpeaking = false;
+
+    setMouth(0);
+
+}
+
+// ------------------------------------------------------
+// AI Chat Connector
+// ------------------------------------------------------
+
+export async function askAI(message) {
+
+    // เปลี่ยนเป็น API ของคุณ
+
+    const response = await fetch("/api/chat", {
+
+        method: "POST",
+
+        headers: {
+
+            "Content-Type":
+                "application/json"
+
+        },
+
+        body: JSON.stringify({
+
+            message
+
+        })
+
+    });
+
+    const data = await response.json();
+
+    await speak(data.reply);
+
+    return data.reply;
+
+}
+
+// ------------------------------------------------------
+// Avatar API
+// ------------------------------------------------------
+
+window.avatar = {
+
+    speak,
+
+    stopSpeak,
+
+    askAI,
+
+    wave,
+
+    thumbsUp,
+
+    point,
+
+    thinking,
+
+    clap,
+
+    startWalking,
+
+    stopWalking
+
+};
+
+// ------------------------------------------------------
+// ตัวอย่างการใช้งาน
+// ------------------------------------------------------
+
+window.demo = async () => {
+
+    await speak("สวัสดีครับ");
+
+    await speak("ยินดีต้อนรับ");
+
+    wave();
+
+};
+
+// ======================================================
+// Update Loop เพิ่มเติม
+// ======================================================
+
+const _oldAnimate = animate;
+
+animate = function () {
+
+    requestAnimationFrame(animate);
+
+    const delta = clock.getDelta();
+
+    if (currentVrm) {
+
+        currentVrm.update(delta);
+
+        updateBlink();
+
+        updateLookAt();
+
+        updateIdle();
+
+        updateWalking();
+
+    }
+
+    renderer.render(scene, camera);
+
+};
