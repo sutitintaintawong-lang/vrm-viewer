@@ -29,20 +29,25 @@ function sendMessage() {
 
     input.value = "";
 
-    // คำตอบตัวอย่างของ AI
-    setTimeout(() => {
+// คำตอบตัวอย่างของ AI
+setTimeout(async () => {
 
-        messages.innerHTML += `
-            <div style="text-align:left;margin:8px 0;color:#0d6efd;">
-                <b>AI:</b> ขอบคุณสำหรับข้อความของคุณ
-                <br>
-                ระบบ AI จะถูกเชื่อมต่อในขั้นตอนถัดไป
-            </div>
-        `;
+    const reply = "ขอบคุณสำหรับข้อความของคุณ ระบบ AI จะถูกเชื่อมต่อในขั้นตอนถัดไป";
 
-        messages.scrollTop = messages.scrollHeight;
+    messages.innerHTML += `
+        <div style="text-align:left;margin:8px 0;color:#0d6efd;">
+            <b>AI:</b> ${reply}
+        </div>
+    `;
 
-    }, 500);
+    messages.scrollTop = messages.scrollHeight;
+
+    // ให้ Avatar พูด
+    if (window.avatar && window.avatar.speak) {
+        await window.avatar.speak(reply);
+    }
+
+}, 500);
 
 }
 
