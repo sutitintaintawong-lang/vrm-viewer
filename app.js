@@ -1,3 +1,34 @@
+const GEMINI_API_KEY = "ใส่ API KEY ใหม่ของคุณ";
+
+async function askAI(message) {
+
+    const response = await fetch(
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-goog-api-key": GEMINI_API_KEY
+            },
+            body: JSON.stringify({
+                contents: [
+                    {
+                        parts: [
+                            {
+                                text: message
+                            }
+                        ]
+                    }
+                ]
+            })
+        }
+    );
+
+    const data = await response.json();
+
+    return data.candidates?.[0]?.content?.parts?.[0]?.text
+        || "ขออภัย ไม่สามารถตอบได้";
+}
 // เปิด/ปิดหน้าต่าง AI Chat
 function openChat() {
     const chat = document.getElementById("chatBox");
