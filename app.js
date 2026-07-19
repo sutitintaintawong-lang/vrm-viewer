@@ -42,7 +42,7 @@ function openChat() {
 }
 
 // ส่งข้อความ
-function sendMessage() {
+async function sendMessage() {
 
     const input = document.getElementById("userInput");
     const messages = document.getElementById("messages");
@@ -62,8 +62,9 @@ function sendMessage() {
 
 // คำตอบตัวอย่างของ AI
 setTimeout(async () => {
+try {
 
-    const reply = "ขอบคุณสำหรับข้อความของคุณ ระบบ AI จะถูกเชื่อมต่อในขั้นตอนถัดไป";
+    const reply = await askAI(text);
 
     messages.innerHTML += `
         <div style="text-align:left;margin:8px 0;color:#0d6efd;">
@@ -73,12 +74,21 @@ setTimeout(async () => {
 
     messages.scrollTop = messages.scrollHeight;
 
-    // ให้ Avatar พูด
     if (window.avatar && window.avatar.speak) {
         await window.avatar.speak(reply);
     }
 
-}, 500);
+} catch (err) {
+
+    console.error(err);
+
+    messages.innerHTML += `
+        <div style="text-align:left;margin:8px 0;color:red;">
+            <b>AI:</b> ไม่สามารถเชื่อมต่อ AI ได้
+        </div>
+    `;
+
+}
 
 }
 
