@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>AI Avatar</title>
+    <title>AI Avatar Receptionist</title>
 
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
-<div id="app">
+    <div id="app">
 
-    <canvas id="avatarCanvas"></canvas>
+        <!-- พื้นที่แสดง Avatar -->
+        <canvas id="avatarCanvas"></canvas>
 
-    <div class="status">
-
-        <span class="dot"></span>
-
-        <span>AI Assistant</span>
+        <!-- สถานะของ AI -->
+        <div id="status" class="status">
+            <span id="statusDot" class="dot"></span>
+            <span id="statusText">กำลังโหลด Avatar...</span>
+        </div>
 
     </div>
 
-</div>
-
-<script type="module" src="vrm.js"></script>
+    <!-- โหลดไฟล์ควบคุม VRM -->
+    <script type="module" src="vrm.js"></script>
 
 </body>
+
 </html>
