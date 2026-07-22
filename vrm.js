@@ -315,3 +315,42 @@ window.addEventListener("mousemove", (event) => {
 
 let headBone = null;
 let neckBone = null;
+// =======================================
+// Message API
+// =======================================
+
+window.addEventListener("message", async (event) => {
+
+    const data = event.data;
+
+    if (!data) return;
+
+    switch (data.type) {
+
+        case "lookFront":
+
+            lookFront();
+
+            break;
+
+        case "lookLeft":
+
+            lookLeft();
+
+            break;
+
+        case "lookRight":
+
+            lookRight();
+
+            break;
+
+        case "speak":
+
+            await speak(data.text || "");
+
+            break;
+
+    }
+
+});
