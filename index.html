@@ -1,120 +1,33 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI E-Service</title>
 
-    <meta name="theme-color" content="#0d6efd">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="style.css">
+<title>AI Avatar</title>
 
-    <link rel="icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
-<header>
-    <h1>🏛 AI E-Service</h1>
-    <p>องค์การบริหารส่วนตำบลแม่เปา</p>
-</header>
-<div id="avatarContainer">
+<div id="app">
+
     <canvas id="avatarCanvas"></canvas>
-</div>
-<div class="container">
 
-    <div class="grid">
+    <div class="status">
 
-        <div class="card" onclick="openChat()">
-            <div class="icon">🤖</div>
-            <h3>AI ผู้ช่วย</h3>
-            <p>สอบถามข้อมูลบริการ</p>
-        </div>
+        <span class="dot"></span>
 
-        <div class="card" onclick="alert('ระบบยื่นคำร้อง')">
-            <div class="icon">📄</div>
-            <h3>ยื่นคำร้อง</h3>
-            <p>ยื่นคำร้องออนไลน์</p>
-        </div>
-
-        <div class="card" onclick="alert('ระบบแจ้งเหตุ')">
-            <div class="icon">🚨</div>
-            <h3>แจ้งเหตุ</h3>
-            <p>แจ้งเหตุฉุกเฉิน</p>
-        </div>
-
-        <div class="card" onclick="alert('ตรวจสอบสถานะคำร้อง')">
-            <div class="icon">📋</div>
-            <h3>ติดตามงาน</h3>
-            <p>ตรวจสอบสถานะคำร้อง</p>
-        </div>
-
-        <div class="card">
-            <div class="icon">📰</div>
-            <h3>ข่าวประชาสัมพันธ์</h3>
-            <p>ข่าวสารล่าสุด</p>
-        </div>
-
-        <div class="card">
-            <div class="icon">📍</div>
-            <h3>แผนที่</h3>
-            <p>ที่ตั้ง อบต.</p>
-        </div>
-
-        <div class="card">
-            <div class="icon">☎</div>
-            <h3>ติดต่อเจ้าหน้าที่</h3>
-            <p>เบอร์โทรและช่องทางติดต่อ</p>
-        </div>
-
-        <div class="card">
-            <div class="icon">⚙️</div>
-            <h3>ตั้งค่า</h3>
-            <p>การใช้งานแอป</p>
-        </div>
+        <span>AI Assistant</span>
 
     </div>
 
 </div>
 
-<div id="chatBox" class="chat">
-    <h2>AI Assistant</h2>
-
-    <div id="messages"></div>
-
-    <input
-        id="userInput"
-        placeholder="พิมพ์คำถาม..."
-    >
-
-    <button onclick="sendMessage()">ส่ง</button>
-
-</div>
-
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
-    "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3/lib/three-vrm.module.min.js"
-  }
-}
-</script>
-
-<script src="app.js"></script>
 <script type="module" src="vrm.js"></script>
-
-<script>
-
-if('serviceWorker' in navigator){
-
-navigator.serviceWorker.register('service-worker.js');
-
-}
-
-</script>
 
 </body>
 </html>
