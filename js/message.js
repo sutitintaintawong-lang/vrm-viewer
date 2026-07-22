@@ -3,6 +3,9 @@
 // Message API
 // ======================================
 
+import {
+    setEmotion
+} from "./emotion.js";
 
 import {
     setStatus
@@ -49,7 +52,20 @@ export function initMessageAPI(app) {
 
             switch(data.type){
 
+case "emotion":
 
+
+    setEmotion(
+
+        app,
+
+        data.value
+
+    );
+
+
+    break;
+                    
                 // ----------------------
                 // Look Front
                 // ----------------------
