@@ -1,6 +1,6 @@
 // ======================================
 // AI Avatar Framework v2.0
-// Head / Neck Look Tracking
+// Head / Neck Look System
 // ======================================
 
 import {
@@ -9,7 +9,7 @@ import {
 
 
 // ======================================
-// Update Look
+// Update Look (Mouse Tracking)
 // ======================================
 
 export function updateLook(app) {
@@ -19,16 +19,31 @@ export function updateLook(app) {
 
 
 
+    // ถ้ามีคำสั่งจาก AI
+    // ให้ใช้ targetLook แทนเมาส์
+
+    const target =
+
+        app.targetLook || {
+
+            x: app.mouse.x,
+
+            y: app.mouse.y
+
+        };
+
+
+
     // --------------------------
-    // Head Rotation
+    // Head
     // --------------------------
 
-    if (app.headBone) {
+    if(app.headBone){
 
 
         const targetY =
 
-            app.mouse.x *
+            target.x *
 
             LOOK.headYaw;
 
@@ -36,7 +51,7 @@ export function updateLook(app) {
 
         const targetX =
 
-            -app.mouse.y *
+            -target.y *
 
             LOOK.headPitch;
 
@@ -44,31 +59,33 @@ export function updateLook(app) {
 
         app.headBone.rotation.y +=
 
-            (
-                targetY -
+        (
 
-                app.headBone.rotation.y
+            targetY -
 
-            )
+            app.headBone.rotation.y
 
-            *
+        )
 
-            LOOK.smooth;
+        *
+
+        LOOK.smooth;
 
 
 
         app.headBone.rotation.x +=
 
-            (
-                targetX -
+        (
 
-                app.headBone.rotation.x
+            targetX -
 
-            )
+            app.headBone.rotation.x
 
-            *
+        )
 
-            LOOK.smooth;
+        *
+
+        LOOK.smooth;
 
 
     }
@@ -76,15 +93,15 @@ export function updateLook(app) {
 
 
     // --------------------------
-    // Neck Rotation
+    // Neck
     // --------------------------
 
-    if (app.neckBone) {
+    if(app.neckBone){
 
 
         const targetNeck =
 
-            app.mouse.x *
+            target.x *
 
             LOOK.neckYaw;
 
@@ -92,19 +109,80 @@ export function updateLook(app) {
 
         app.neckBone.rotation.y +=
 
-            (
-                targetNeck -
+        (
 
-                app.neckBone.rotation.y
+            targetNeck -
 
-            )
+            app.neckBone.rotation.y
 
-            *
+        )
 
-            LOOK.smooth;
+        *
+
+        LOOK.smooth;
 
 
     }
+
+
+}
+
+
+
+// ======================================
+// Look Front
+// ======================================
+
+export function lookFront(app){
+
+
+    app.targetLook = {
+
+        x:0,
+
+        y:0
+
+    };
+
+
+}
+
+
+
+// ======================================
+// Look Left
+// ======================================
+
+export function lookLeft(app){
+
+
+    app.targetLook = {
+
+        x:-0.8,
+
+        y:0
+
+    };
+
+
+}
+
+
+
+// ======================================
+// Look Right
+// ======================================
+
+export function lookRight(app){
+
+
+    app.targetLook = {
+
+        x:0.8,
+
+        y:0
+
+    };
 
 
 }
