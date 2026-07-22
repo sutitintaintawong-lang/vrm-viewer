@@ -1,150 +1,148 @@
-import * as THREE from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import {
-VRMLoaderPlugin,
-VRMUtils
-} from "@pixiv/three-vrm";
+import * as THREE from "./libs/three.module.js";
+import { GLTFLoader } from "./libs/GLTFLoader.js";
+import { OrbitControls } from "./libs/OrbitControls.js";
+import { VRMLoaderPlugin } from "./libs/VRMLoaderPlugin.js";
 
+// ============================
 // Canvas
+// ============================
+
 const canvas = document.getElementById("avatarCanvas");
 
+// ============================
+// Scene
+// ============================
+
+const scene = new THREE.Scene();
+
+// ============================
+// Camera
+// ============================
+
+const camera = new THREE.PerspectiveCamera(
+
+30,
+window.innerWidth / window.innerHeight,
+0.1,
+100
+
+);
+
+// ซูมเฉพาะใบหน้า
+
+camera.position.set(
+
+0,
+1.45,
+0.65
+
+);
+
+// ============================
 // Renderer
+// ============================
+
 const renderer = new THREE.WebGLRenderer({
+
 canvas,
 alpha:true,
 antialias:true
+
 });
 
 renderer.setPixelRatio(window.devicePixelRatio);
 
 renderer.setSize(
+
 window.innerWidth,
-420
-);
-
-renderer.outputColorSpace =
-THREE.SRGBColorSpace;
-
-// Scene
-const scene = new THREE.Scene();
-
-// Camera
-const camera = new THREE.PerspectiveCamera(
-
-30,
-
-window.innerWidth / 420,
-
-0.1,
-
-100
+window.innerHeight
 
 );
 
-camera.position.set(
-0,
-1.45,
-2.2
-);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
 
+// ============================
 // Controls
-const controls =
-new OrbitControls(
+// ============================
+
+const controls = new OrbitControls(
+
 camera,
 renderer.domElement
+
 );
 
-controls.target.set(
-0,
-1.35,
-0
-);
+controls.enablePan = false;
+controls.enableZoom = false;
+controls.enableRotate = false;
 
-controls.enableDamping=true;
-
-controls.dampingFactor=.08;
-
+// ============================
 // Lights
-const hemi =
-new THREE.HemisphereLight(
+// ============================
+
+// Ambient
+
+const ambient = new THREE.AmbientLight(
 
 0xffffff,
+2
 
-0x666666,
+);
 
+scene.add(ambient);
+
+// Directional
+
+const directional = new THREE.DirectionalLight(
+
+0xffffff,
 1.5
 
 );
 
-scene.add(hemi);
+directional.position.set(
 
-const dir =
-new THREE.DirectionalLight(
+1,
+2,
+2
+
+);
+
+scene.add(directional);
+
+// Fill
+
+const fill = new THREE.DirectionalLight(
 
 0xffffff,
-
-2.5
-
-);
-
-dir.position.set(
-2,
-5,
-3
-);
-
-dir.castShadow=true;
-
-scene.add(dir);
-
-// Floor
-const floor =
-new THREE.Mesh(
-
-new THREE.CircleGeometry(
-8,
-64
-),
-
-new THREE.MeshStandardMaterial({
-
-color:0xf2f2f2
-
-})
+0.8
 
 );
 
-floor.rotation.x =
--Math.PI/2;
+fill.position.set(
 
-floor.position.y=
--1;
+-2,
+1,
+1
 
-scene.add(floor);
+);
 
+scene.add(fill);
+
+// ============================
 // Clock
-const clock =
-new THREE.Clock();
+// ============================
 
-// Variables
+const clock = new THREE.Clock();
 
-let currentVRM=null;
+// ============================
+// VRM
+// ============================
 
-let mixer=null;
-
-let blinkTimer=0;
-
-let mouseX=0;
-
-let mouseY=0;
-
-let walking=false;
-
-let speaking=false;
-// -----------------------------
-// Loader
-// -----------------------------
+let currentVrm = null;
+// ============================
+// Load VRM
+// ============================
 
 const loader = new GLTFLoader();
 
@@ -158,66 +156,64 @@ loader.load(
 
     (gltf) => {
 
-        currentVRM = gltf.userData.vrm;
+        currentVrm = gltf.userData.vrm;
 
-        if (!currentVRM) {
-            console.error("VRM not found");
-            return;
-        }
+        scene.add(currentVrm.scene);
+// Get Bones
 
-        // Optimize
-        VRMUtils.removeUnnecessaryVertices(gltf.scene);
-        VRMUtils.removeUnnecessaryJoints(gltf.scene);
+headBone = currentVrm.humanoid.getNormalizedBoneNode("head");
 
-        // Rotate VRM0 automatically
-        VRMUtils.rotateVRM0(currentVRM);
+neckBone = currentVrm.humanoid.getNormalizedBoneNode("neck");
+        // ----------------------------
+        // Initial Position
+        // ----------------------------
 
-        scene.add(currentVRM.scene);
-
-        currentVRM.scene.position.set(
+        currentVrm.scene.position.set(
             0,
-            -1,
+            -1.15,
             0
         );
 
-        currentVRM.scene.rotation.y =
-            Math.PI;
+        // ----------------------------
+        // Initial Rotation
+        // ----------------------------
 
-        currentVRM.scene.scale.set(
-            1,
-            1,
-            1
+        currentVrm.scene.rotation.set(
+            0,
+            0,
+            0
         );
 
-        // Shadow
+        // ----------------------------
+        // Scale
+        // ----------------------------
 
-        currentVRM.scene.traverse((obj) => {
+        currentVrm.scene.scale.setScalar(1);
 
-            if (obj.isMesh) {
+        // ----------------------------
+        // Remove unnecessary joints
+        // ----------------------------
 
-                obj.castShadow = true;
+        currentVrm.scene.traverse((obj) => {
 
-                obj.receiveShadow = true;
-
-            }
+            obj.frustumCulled = false;
 
         });
 
-        console.log("Avatar Loaded");
-
-        setupAvatar();
+        console.log("VRM Loaded");
 
     },
 
     (progress) => {
 
-        const percent =
-            progress.total
-                ? (progress.loaded / progress.total * 100).toFixed(0)
-                : 0;
-
         console.log(
-            "Loading " + percent + "%"
+            "Loading :",
+            (
+                progress.loaded /
+                progress.total *
+                100
+            ).toFixed(0),
+            "%"
         );
 
     },
@@ -230,388 +226,31 @@ loader.load(
 
 );
 
+// ============================
+// Resize
+// ============================
 
-// -----------------------------
-// Avatar Initialize
-// -----------------------------
+window.addEventListener("resize", () => {
 
-function setupAvatar() {
+    camera.aspect = window.innerWidth / window.innerHeight;
 
-    if (!currentVRM) return;
+    camera.updateProjectionMatrix();
 
-    // Face camera
+    renderer.setSize(
 
-    currentVRM.lookAt.target = camera;
+        window.innerWidth,
 
-    // Initial Expression
+        window.innerHeight
 
-    if (currentVRM.expressionManager) {
-
-        currentVRM.expressionManager.setValue(
-            "happy",
-            0.15
-        );
-
-    }
-
-    console.log(
-        "Avatar Ready"
     );
 
-}
-// -----------------------------
-// Animation
-// -----------------------------
+});
 
-function updateIdleMotion(time) {
-
-    if (!currentVRM) return;
-
-    const neck =
-        currentVRM.humanoid?.getNormalizedBoneNode("neck");
-
-    const spine =
-        currentVRM.humanoid?.getNormalizedBoneNode("spine");
-
-    const chest =
-        currentVRM.humanoid?.getNormalizedBoneNode("chest");
-
-    if (neck) {
-
-        neck.rotation.x =
-            Math.sin(time * 1.5) * 0.03;
-
-        neck.rotation.z =
-            Math.cos(time * 1.3) * 0.02;
-
-    }
-
-    if (spine) {
-
-        spine.rotation.z =
-            Math.sin(time * 0.8) * 0.015;
-
-    }
-
-    if (chest) {
-
-        chest.rotation.x =
-            Math.sin(time * 1.2) * 0.01;
-
-    }
-
-}
-
-// -----------------------------
-// Render Loop
-// -----------------------------
+// ============================
+// Animation Loop
+// ============================
 
 function animate() {
-
-    requestAnimationFrame(animate);
-
-    const delta =
-        clock.getDelta();
-
-    const elapsed =
-        clock.elapsedTime;
-
-    controls.update();
-
-    if (currentVRM) {
-
-        currentVRM.update(delta);
-
-        updateIdleMotion(elapsed);
-
-    }
-
-    renderer.render(
-        scene,
-        camera
-    );
-
-}
-
-animate();
-
-
-// -----------------------------
-// Resize
-// -----------------------------
-
-window.addEventListener(
-
-    "resize",
-
-    () => {
-
-        renderer.setSize(
-            window.innerWidth,
-            420
-        );
-
-        camera.aspect =
-            window.innerWidth / 420;
-
-        camera.updateProjectionMatrix();
-
-    }
-
-);
-
-
-// -----------------------------
-// Mouse Tracking
-// -----------------------------
-
-window.addEventListener(
-
-    "mousemove",
-
-    (event) => {
-
-        mouseX =
-            (event.clientX /
-                window.innerWidth) *
-                2 -
-            1;
-
-        mouseY =
-            (event.clientY /
-                window.innerHeight) *
-                2 -
-            1;
-
-    }
-
-);
-// ======================================================
-// Part 3 : Lip Sync + Speak + AI Chat + Export
-// ======================================================
-
-let speechSynthesisUtterance = null;
-let isSpeaking = false;
-
-// ------------------------------------------------------
-// Lip Sync
-// ------------------------------------------------------
-
-function setMouth(value) {
-
-    if (!currentVrm) return;
-
-    const exp = currentVrm.expressionManager;
-
-    if (!exp) return;
-
-    value = Math.max(0, Math.min(1, value));
-
-    exp.setValue("aa", value);
-
-}
-
-function animateLipSync(duration = 2500) {
-
-    const start = performance.now();
-
-    function frame(now) {
-
-        if (!isSpeaking) {
-
-            setMouth(0);
-
-            return;
-
-        }
-
-        const t = (now - start);
-
-        const v =
-            Math.abs(Math.sin(t * 0.02)) * 0.8 +
-            Math.random() * 0.15;
-
-        setMouth(v);
-
-        requestAnimationFrame(frame);
-
-    }
-
-    requestAnimationFrame(frame);
-
-}
-
-// ------------------------------------------------------
-// Speak()
-// ------------------------------------------------------
-
-export function speak(text) {
-
-    return new Promise((resolve) => {
-
-        if (!("speechSynthesis" in window)) {
-
-            console.warn("Speech API not supported");
-
-            resolve();
-
-            return;
-
-        }
-
-        speechSynthesis.cancel();
-
-        speechSynthesisUtterance =
-            new SpeechSynthesisUtterance(text);
-
-        speechSynthesisUtterance.lang = "th-TH";
-
-        speechSynthesisUtterance.rate = 1;
-
-        speechSynthesisUtterance.pitch = 1;
-
-        speechSynthesisUtterance.volume = 1;
-
-        isSpeaking = true;
-
-        animateLipSync();
-
-        // ยิ้มเล็กน้อย
-
-        if (currentVrm?.expressionManager) {
-
-            currentVrm.expressionManager.setValue(
-                "happy",
-                0.25
-            );
-
-        }
-
-        speechSynthesisUtterance.onend = () => {
-
-            isSpeaking = false;
-
-            setMouth(0);
-
-            if (currentVrm?.expressionManager) {
-
-                currentVrm.expressionManager.setValue(
-                    "happy",
-                    0
-                );
-
-            }
-
-            resolve();
-
-        };
-
-        speechSynthesis.speak(
-            speechSynthesisUtterance
-        );
-
-    });
-
-}
-
-// ------------------------------------------------------
-// Stop Speak
-// ------------------------------------------------------
-
-export function stopSpeak() {
-
-    speechSynthesis.cancel();
-
-    isSpeaking = false;
-
-    setMouth(0);
-
-}
-
-// ------------------------------------------------------
-// AI Chat Connector
-// ------------------------------------------------------
-
-export async function askAI(message) {
-
-    // เปลี่ยนเป็น API ของคุณ
-
-    const response = await fetch("/api/chat", {
-
-        method: "POST",
-
-        headers: {
-
-            "Content-Type":
-                "application/json"
-
-        },
-
-        body: JSON.stringify({
-
-            message
-
-        })
-
-    });
-
-    const data = await response.json();
-
-    await speak(data.reply);
-
-    return data.reply;
-
-}
-
-// ------------------------------------------------------
-// Avatar API
-// ------------------------------------------------------
-
-window.avatar = {
-
-    speak,
-
-    stopSpeak,
-
-    askAI,
-
-    wave,
-
-    thumbsUp,
-
-    point,
-
-    thinking,
-
-    clap,
-
-    startWalking,
-
-    stopWalking
-
-};
-
-// ------------------------------------------------------
-// ตัวอย่างการใช้งาน
-// ------------------------------------------------------
-
-window.demo = async () => {
-
-    await speak("สวัสดีครับ");
-
-    await speak("ยินดีต้อนรับ");
-
-    wave();
-
-};
-
-// ======================================================
-// Update Loop เพิ่มเติม
-// ======================================================
-
-const _oldAnimate = animate;
-
-animate = function () {
 
     requestAnimationFrame(animate);
 
@@ -620,17 +259,59 @@ animate = function () {
     if (currentVrm) {
 
         currentVrm.update(delta);
+// Head Tracking
 
-        updateBlink();
+if(headBone){
 
-        updateLookAt();
+    headBone.rotation.y +=
+        ((mouse.x * 0.35) - headBone.rotation.y) * 0.08;
 
-        updateIdle();
+    headBone.rotation.x +=
+        ((-mouse.y * 0.18) - headBone.rotation.x) * 0.08;
 
-        updateWalking();
+}
 
+if(neckBone){
+
+    neckBone.rotation.y +=
+        ((mouse.x * 0.12) - neckBone.rotation.y) * 0.08;
+
+}
     }
 
-    renderer.render(scene, camera);
+    renderer.render(
+
+        scene,
+
+        camera
+
+    );
+
+}
+
+animate();
+// ============================
+// Mouse Tracking
+// ============================
+
+const mouse = {
+
+    x: 0,
+    y: 0
 
 };
+
+window.addEventListener("mousemove", (event) => {
+
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+
+    mouse.y = (event.clientY / window.innerHeight) * 2 - 1;
+
+});
+
+// ============================
+// Look At
+// ============================
+
+let headBone = null;
+let neckBone = null;
