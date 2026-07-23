@@ -86,7 +86,7 @@ export function loadVRM(app) {
                 // หันหน้าเข้ากล้อง
                 // =================================
 
-                vrm.scene.rotation.y = 0;
+                vrm.scene.rotation.y = Math.PI;
 
 
 
