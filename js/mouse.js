@@ -12,19 +12,25 @@ export function initMouseTracking(app) {
         (event) => {
 
 
-            // ตำแหน่ง X
+            // X (-1 ซ้าย / 1 ขวา)
 
             app.mouse.x =
-                (event.clientX /
-                window.innerWidth) * 2 - 1;
+
+                (
+                    event.clientX /
+                    window.innerWidth
+                ) * 2 - 1;
 
 
 
-            // ตำแหน่ง Y
+            // Y (-1 บน / 1 ล่าง)
 
             app.mouse.y =
-                (event.clientY /
-                window.innerHeight) * 2 - 1;
+
+                (
+                    event.clientY /
+                    window.innerHeight
+                ) * 2 - 1;
 
 
         }
