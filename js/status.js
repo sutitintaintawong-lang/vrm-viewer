@@ -12,37 +12,29 @@ export function setStatus(text, color) {
 
 
     const statusText =
-
         document.getElementById(
             "statusText"
         );
 
 
-
     const statusDot =
-
         document.getElementById(
             "statusDot"
         );
 
 
 
-    if(statusText){
-
+    if (statusText) {
 
         statusText.textContent = text;
-
 
     }
 
 
 
-    if(statusDot){
+    if (statusDot) {
 
-
-        statusDot.style.background =
-            color;
-
+        statusDot.style.backgroundColor = color;
 
     }
 
