@@ -7,6 +7,10 @@ import {
     EMOTION
 } from "./config.js";
 
+import {
+    VRMExpressionPresetName
+} from "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3/lib/three-vrm.module.min.js";
+
 
 // ======================================
 // Set Emotion
@@ -17,141 +21,82 @@ export function setEmotion(
     emotion
 ) {
 
-
-    if(!app.currentVrm) return;
-
-
-    if(!app.currentVrm.expressionManager)
-        return;
-
-
+    if (!app.currentVrm) return;
 
     const expressionManager =
-
         app.currentVrm.expressionManager;
 
-
+    if (!expressionManager) return;
 
     // Reset ทุก Expression ก่อน
+    resetEmotion(expressionManager);
 
-    resetEmotion(
-
-        expressionManager
-
-    );
-
-
-
-    switch(emotion){
-
+    switch (emotion) {
 
         case "happy":
 
-
             expressionManager.setValue(
-
-                "happy",
-
+                VRMExpressionPresetName.Happy,
                 1
-
             );
 
             break;
-
-
 
         case "sad":
 
-
             expressionManager.setValue(
-
-                "sad",
-
+                VRMExpressionPresetName.Sad,
                 1
-
             );
 
             break;
-
-
 
         case "surprised":
 
-
             expressionManager.setValue(
-
-                "surprised",
-
+                VRMExpressionPresetName.Surprised,
                 1
-
             );
 
             break;
-
-
 
         case "neutral":
 
-
             break;
-
-
 
         default:
 
-
             console.log(
-
                 "Unknown emotion:",
-
                 emotion
-
             );
-
 
     }
 
-
-
     app.emotion = emotion;
 
-
 }
-
 
 
 // ======================================
 // Reset Emotion
 // ======================================
 
-function resetEmotion(manager){
-
-
-    manager.setValue(
-
-        "happy",
-
-        0
-
-    );
-
+function resetEmotion(manager) {
 
     manager.setValue(
-
-        "sad",
-
+        VRMExpressionPresetName.Happy,
         0
-
     );
-
 
     manager.setValue(
-
-        "surprised",
-
+        VRMExpressionPresetName.Sad,
         0
-
     );
 
+    manager.setValue(
+        VRMExpressionPresetName.Surprised,
+        0
+    );
 
 }
