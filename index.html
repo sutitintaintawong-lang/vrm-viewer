@@ -11,25 +11,52 @@
     <meta name="theme-color"
           content="#0d6efd">
 
+
     <title>AI Avatar Receptionist</title>
+
+
+    <!-- ======================================
+         Three.js Import Map
+         สำหรับ CDN Module
+    ======================================= -->
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+        }
+    }
+    </script>
+
+
 
     <link rel="stylesheet"
           href="style.css">
 
+
 </head>
+
 
 <body>
 
+
     <div id="app">
 
-        <!-- Avatar -->
+
+        <!-- Avatar Canvas -->
+
         <canvas id="avatarCanvas"></canvas>
 
+
+
         <!-- Status -->
+
         <div id="status" class="status">
+
 
             <span id="statusDot"
                   class="dot"></span>
+
 
             <span id="statusText">
 
@@ -37,14 +64,23 @@
 
             </span>
 
+
         </div>
+
 
     </div>
 
+
+
+
     <!-- Main Module -->
+
     <script type="module"
             src="./vrm.js"></script>
 
+
+
 </body>
+
 
 </html>
