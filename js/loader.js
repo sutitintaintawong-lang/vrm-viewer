@@ -1,8 +1,7 @@
 // ======================================
 // AI Avatar Framework v2.0
-// VRM Loader (CDN Version)
+// VRM Loader
 // ======================================
-
 
 import { GLTFLoader } 
 from "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js";
@@ -27,17 +26,15 @@ import {
 // Load VRM
 // ======================================
 
-export function loadVRM(app) {
+export function loadVRM(app){
 
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve,reject)=>{
 
 
         const loader = new GLTFLoader();
 
 
-
-        // VRM Plugin
 
         loader.register((parser)=>{
 
@@ -58,16 +55,10 @@ export function loadVRM(app) {
                 const vrm = gltf.userData.vrm;
 
 
-
                 if(!vrm){
 
-                    console.error(
-                        "VRM data not found"
-                    );
-
-
                     reject(
-                        "VRM missing"
+                        "VRM not found"
                     );
 
                     return;
@@ -80,30 +71,21 @@ export function loadVRM(app) {
 
 
 
-                // ======================================
-                // Avatar Direction
-                // Fix VRM Facing Camera
-                // ======================================
+                /*
+                    VRM มาตรฐาน:
+                    หน้า Avatar อยู่ทาง -Z
+
+                    กล้องจะถูกวางด้าน -Z
+                    จึงไม่ต้องหมุนโมเดล
+                */
 
                 vrm.scene.rotation.set(
-
                     0,
-
                     0,
-
                     0
-
                 );
 
 
-
-                // Update World Matrix
-
-                vrm.scene.updateMatrixWorld(true);
-
-
-
-                // Add Scene
 
                 app.scene.add(
                     vrm.scene
@@ -135,13 +117,12 @@ export function loadVRM(app) {
 
 
 
-                // Disable Culling
+                // Disable culling
 
                 vrm.scene.traverse((obj)=>{
 
 
                     obj.frustumCulled = false;
-
 
 
                     if(obj.isMesh){
@@ -157,9 +138,7 @@ export function loadVRM(app) {
 
 
 
-                // ======================================
-                // Bone Reference
-                // ======================================
+                // Bones
 
                 if(vrm.humanoid){
 
@@ -170,7 +149,6 @@ export function loadVRM(app) {
                     .getNormalizedBoneNode(
                         "head"
                     );
-
 
 
                     app.neckBone =
@@ -193,11 +171,8 @@ export function loadVRM(app) {
 
 
                 setStatus(
-
                     "พร้อมใช้งาน",
-
                     "#00cc66"
-
                 );
 
 
@@ -209,64 +184,15 @@ export function loadVRM(app) {
             },
 
 
-
-            (progress)=>{
-
-
-                if(progress.total){
-
-
-                    const percent =
-
-                    (
-
-                        progress.loaded /
-
-                        progress.total *
-
-                        100
-
-                    ).toFixed(0);
-
-
-
-                    console.log(
-
-                        "Loading VRM",
-
-                        percent + "%"
-
-                    );
-
-
-                }
-
-
-            },
-
+            undefined,
 
 
             (error)=>{
 
 
                 console.error(
-
-                    "VRM Load Error",
-
                     error
-
                 );
-
-
-
-                setStatus(
-
-                    "โหลด Avatar ไม่สำเร็จ",
-
-                    "red"
-
-                );
-
 
 
                 reject(error);
