@@ -37,7 +37,7 @@ export function loadVRM(app) {
 
 
 
-        // Register VRM Plugin
+        // VRM Plugin
 
         loader.register((parser)=>{
 
@@ -70,7 +70,6 @@ export function loadVRM(app) {
                         "VRM missing"
                     );
 
-
                     return;
 
                 }
@@ -81,16 +80,30 @@ export function loadVRM(app) {
 
 
 
-                // =================================
+                // ======================================
                 // Avatar Direction
-                // หันหน้าเข้ากล้อง
-                // =================================
+                // Fix VRM Facing Camera
+                // ======================================
 
-                vrm.scene.rotation.y = Math.PI;
+                vrm.scene.rotation.set(
+
+                    0,
+
+                    0,
+
+                    0
+
+                );
 
 
 
-                // เพิ่มเข้า Scene
+                // Update World Matrix
+
+                vrm.scene.updateMatrixWorld(true);
+
+
+
+                // Add Scene
 
                 app.scene.add(
                     vrm.scene
@@ -122,7 +135,7 @@ export function loadVRM(app) {
 
 
 
-                // Disable Frustum Culling
+                // Disable Culling
 
                 vrm.scene.traverse((obj)=>{
 
@@ -144,7 +157,9 @@ export function loadVRM(app) {
 
 
 
+                // ======================================
                 // Bone Reference
+                // ======================================
 
                 if(vrm.humanoid){
 
