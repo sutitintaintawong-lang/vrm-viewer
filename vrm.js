@@ -10,27 +10,46 @@ import { startAnimation } from "./js/animation.js";
 import { initMessageAPI } from "./js/message.js";
 import { setStatus } from "./js/status.js";
 
-// เริ่มระบบ
+// ======================================
+// Initialize
+// ======================================
+
 async function init() {
 
-    setStatus("กำลังโหลด Avatar...", "orange");
+    try {
 
-    // สร้าง Scene
-    const app = initScene();
+        setStatus("กำลังโหลด Avatar...", "orange");
 
-    // โหลด VRM
-    await loadVRM(app);
+        // สร้าง Scene
+        const app = initScene();
 
-    // เปิด Mouse Tracking
-    initMouseTracking(app);
+        // โหลด Avatar
+        await loadVRM(app);
 
-    // เปิด Message API
-    initMessageAPI(app);
+        // เปิดระบบ Mouse Tracking
+        initMouseTracking(app);
 
-    // เริ่ม Animation
-    startAnimation(app);
+        // เปิด Message API
+        initMessageAPI(app);
 
-    setStatus("พร้อมใช้งาน", "#00cc66");
+        // เริ่ม Animation Loop
+        startAnimation(app);
+
+        setStatus("พร้อมใช้งาน", "#00cc66");
+
+        // Debug
+        window.avatarApp = app;
+
+    } catch (error) {
+
+        console.error(error);
+
+        setStatus(
+            "โหลด Avatar ไม่สำเร็จ",
+            "red"
+        );
+
+    }
 
 }
 
