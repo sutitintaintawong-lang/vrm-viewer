@@ -3,8 +3,11 @@
 // VRM Loader
 // ======================================
 
-import { GLTFLoader } from "../libs/GLTFLoader.js";
-import { VRMLoaderPlugin } from "../libs/VRMLoaderPlugin.js";
+import { GLTFLoader } from 
+"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js";
+
+import { VRMLoaderPlugin } from 
+"https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3/lib/three-vrm.module.min.js";
 
 import {
     AVATAR
