@@ -53,7 +53,16 @@ export function speak(app, text) {
 
         startLipSync(app);
 
+if (!("speechSynthesis" in window)) {
 
+    setStatus(
+        "ไม่รองรับเสียงพูด",
+        "red"
+    );
+
+    resolve();
+    return;
+}
 
         // --------------------------
         // Browser Voice
@@ -70,7 +79,15 @@ export function speak(app, text) {
         // ภาษาไทย
 
         utterance.lang = "th-TH";
+const voices = speechSynthesis.getVoices();
 
+const thaiVoice = voices.find(
+    voice => voice.lang.startsWith("th")
+);
+
+if (thaiVoice) {
+    utterance.voice = thaiVoice;
+}
 
 
         // ความเร็วเสียง
