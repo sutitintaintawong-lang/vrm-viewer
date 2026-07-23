@@ -3,6 +3,7 @@
 // VRM Loader (CDN Version)
 // ======================================
 
+
 import { GLTFLoader } 
 from "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js";
 
@@ -21,6 +22,7 @@ import {
 } from "./status.js";
 
 
+
 // ======================================
 // Load VRM
 // ======================================
@@ -32,6 +34,7 @@ export function loadVRM(app) {
 
 
         const loader = new GLTFLoader();
+
 
 
         // Register VRM Plugin
@@ -62,9 +65,11 @@ export function loadVRM(app) {
                         "VRM data not found"
                     );
 
+
                     reject(
                         "VRM missing"
                     );
+
 
                     return;
 
@@ -76,9 +81,12 @@ export function loadVRM(app) {
 
 
 
-                // หันหน้า Avatar
+                // =================================
+                // Avatar Direction
+                // หันหน้าเข้ากล้อง
+                // =================================
 
-                vrm.scene.rotation.y = Math.PI;
+                vrm.scene.rotation.y = 0;
 
 
 
@@ -114,12 +122,13 @@ export function loadVRM(app) {
 
 
 
-                // ปิด frustum culling
+                // Disable Frustum Culling
 
                 vrm.scene.traverse((obj)=>{
 
 
                     obj.frustumCulled = false;
+
 
 
                     if(obj.isMesh){
@@ -135,23 +144,27 @@ export function loadVRM(app) {
 
 
 
-                // Bone reference
+                // Bone Reference
 
                 if(vrm.humanoid){
 
 
                     app.headBone =
+
                     vrm.humanoid
                     .getNormalizedBoneNode(
                         "head"
                     );
 
 
+
                     app.neckBone =
+
                     vrm.humanoid
                     .getNormalizedBoneNode(
                         "neck"
                     );
+
 
                 }
 
@@ -165,8 +178,11 @@ export function loadVRM(app) {
 
 
                 setStatus(
+
                     "พร้อมใช้งาน",
+
                     "#00cc66"
+
                 );
 
 
@@ -178,6 +194,7 @@ export function loadVRM(app) {
             },
 
 
+
             (progress)=>{
 
 
@@ -187,8 +204,11 @@ export function loadVRM(app) {
                     const percent =
 
                     (
+
                         progress.loaded /
+
                         progress.total *
+
                         100
 
                     ).toFixed(0);
@@ -196,9 +216,13 @@ export function loadVRM(app) {
 
 
                     console.log(
+
                         "Loading VRM",
+
                         percent + "%"
+
                     );
+
 
                 }
 
@@ -206,19 +230,28 @@ export function loadVRM(app) {
             },
 
 
+
             (error)=>{
 
 
                 console.error(
+
                     "VRM Load Error",
+
                     error
+
                 );
+
 
 
                 setStatus(
+
                     "โหลด Avatar ไม่สำเร็จ",
+
                     "red"
+
                 );
+
 
 
                 reject(error);
