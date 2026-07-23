@@ -1,3 +1,9 @@
+/* ======================================
+   AI Avatar Framework v2.0
+   Style
+====================================== */
+
+
 /* Reset */
 
 *{
@@ -6,14 +12,22 @@
     box-sizing:border-box;
 }
 
-html,body{
+
+html,
+body{
+
     width:100%;
     height:100%;
+
     overflow:hidden;
 
     background:transparent;
+
     font-family:Arial,sans-serif;
+
 }
+
+
 
 /* Container */
 
@@ -23,23 +37,32 @@ html,body{
     height:100%;
 
     display:flex;
+
     justify-content:center;
+
     align-items:center;
+
     position:relative;
 
     overflow:hidden;
 
 }
 
+
+
 /* Canvas */
 
 #avatarCanvas{
 
     width:100%;
+
     height:100%;
+
     display:block;
 
 }
+
+
 
 /* Status */
 
@@ -53,86 +76,105 @@ html,body{
 
     transform:translateX(-50%);
 
+
     background:rgba(255,255,255,.10);
 
     backdrop-filter:blur(14px);
 
+
     border:1px solid rgba(255,255,255,.15);
+
 
     border-radius:30px;
 
+
     padding:8px 18px;
+
 
     color:white;
 
+
     display:flex;
+
 
     align-items:center;
 
+
     gap:10px;
+
 
     font-size:14px;
 
+
     letter-spacing:.5px;
+
 
     user-select:none;
 
 }
 
-/* Green Dot */
+
+
+/* Status Dot */
 
 .dot{
-
-    width:10px;
-
-    height:10px;
-
-    border-radius:50%;
-
-    background:#00ff88;
-
-    box-shadow:0 0 12px #00ff88;
-
-    animation:pulse 1.5s infinite;
-
-}
-
-@keyframes pulse{
-
-0%{
-
-transform:scale(1);
-
-opacity:1;
-
-}
-
-50%{
-
-transform:scale(1.5);
-
-opacity:.6;
-
-}
-
-100%{
-
-transform:scale(1);
-
-opacity:1;
-
-}
-.dot {
 
     width:12px;
 
     height:12px;
 
+
     border-radius:50%;
+
 
     display:inline-block;
 
-    margin-right:8px;
+
+    background:#00ff88;
+
+
+    box-shadow:0 0 12px #00ff88;
+
+
+    animation:pulse 1.5s infinite;
+
 
 }
+
+
+
+/* Pulse Animation */
+
+@keyframes pulse{
+
+
+    0%{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+
+
+    50%{
+
+        transform:scale(1.5);
+
+        opacity:.6;
+
+    }
+
+
+
+    100%{
+
+        transform:scale(1);
+
+        opacity:1;
+
+    }
+
+
 }
