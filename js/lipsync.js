@@ -3,29 +3,31 @@
 // Lip Sync System
 // ======================================
 
+
 import {
     LIPSYNC
 } from "./config.js";
 
+
+
 import {
     VRMExpressionPresetName
-} from "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3/lib/three-vrm.module.min.js";
+} from "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3.4.0/lib/three-vrm.module.js";
+
 
 
 // ======================================
 // Start Lip Sync
 // ======================================
 
-export function startLipSync(app) {
+export function startLipSync(app){
 
 
     app.lipSync = {
 
-
         active:true,
 
         time:0
-
 
     };
 
@@ -38,25 +40,19 @@ export function startLipSync(app) {
 // Stop Lip Sync
 // ======================================
 
-export function stopLipSync(app) {
+export function stopLipSync(app){
 
 
     if(app.lipSync){
 
-
         app.lipSync.active = false;
-
 
     }
 
 
-
     setMouth(
-
         app,
-
         0
-
     );
 
 
@@ -79,11 +75,8 @@ export function updateLipSync(
 
 
     if(
-
         !app.lipSync ||
-
         !app.lipSync.active
-
     ){
 
         return;
@@ -98,7 +91,6 @@ export function updateLipSync(
 
     const mouthValue =
 
-
         (
 
             Math.sin(
@@ -109,9 +101,7 @@ export function updateLipSync(
 
             )
 
-            +
-
-            1
+            + 1
 
         )
 
@@ -142,8 +132,10 @@ export function updateLipSync(
 // Set Mouth Expression
 // ======================================
 
-function setMouth(app,value){
-
+function setMouth(
+    app,
+    value
+){
 
 
     const expressionManager =
@@ -152,34 +144,88 @@ function setMouth(app,value){
 
 
 
-    if(!expressionManager) return;
+    if(!expressionManager){
 
-
-
-expressionManager.setValue(
-    VRMExpressionPresetName.Aa,
-    value
-);
-    } catch {
-
-        try {
-
-            expressionManager.setValue(
-                "aa",
-                value
-            );
-
-        } catch {
-
-            expressionManager.setValue(
-                "A",
-                value
-            );
-
-        }
+        return;
 
     }
 
+
+
+    try {
+
+
+        // VRM 1.0
+
+        expressionManager.setValue(
+
+            VRMExpressionPresetName.Aa,
+
+            value
+
+        );
+
+
+    }
+
+    catch(error){
+
+
+        console.warn(
+            "VRM Aa expression not found",
+            error
+        );
+
+
+
+        try {
+
+
+            // fallback
+
+            expressionManager.setValue(
+
+                "aa",
+
+                value
+
+            );
+
+
+        }
+
+        catch(error2){
+
+
+            try {
+
+
+                expressionManager.setValue(
+
+                    "A",
+
+                    value
+
+                );
+
+
+            }
+
+            catch(error3){
+
+
+                console.warn(
+                    "Mouth expression unavailable"
+                );
+
+
+            }
+
+
+        }
+
+
+    }
+
+
 }
-
-
