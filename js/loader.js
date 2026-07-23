@@ -3,19 +3,22 @@
 // VRM Loader
 // ======================================
 
-import { GLTFLoader } from 
-"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js";
+import { GLTFLoader } 
+from "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js";
 
-import { VRMLoaderPlugin } from 
-"https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3/lib/three-vrm.module.min.js";
+import { VRMLoaderPlugin } 
+from "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3.4.0/lib/three-vrm.module.min.js";
+
 
 import {
     AVATAR
 } from "./config.js";
 
+
 import {
     setStatus
 } from "./status.js";
+
 
 
 // ======================================
@@ -24,11 +27,15 @@ import {
 
 export function loadVRM(app) {
 
+
     return new Promise((resolve, reject) => {
 
 
         const loader = new GLTFLoader();
 
+
+
+        // VRM Plugin
 
         loader.register((parser)=>{
 
@@ -46,23 +53,41 @@ export function loadVRM(app) {
             (gltf)=>{
 
 
-const vrm = gltf.userData.vrm;
-vrm.scene.rotation.y = Math.PI;
-app.currentVrm = vrm;
+                const vrm = gltf.userData.vrm;
 
-// หันหน้าเข้ากล้อง
-vrm.scene.rotation.y = Math.PI;
 
-app.scene.add(vrm.scene);
+                if(!vrm){
+
+                    console.error(
+                        "VRM data not found"
+                    );
+
+                    reject(
+                        "VRM missing"
+                    );
+
+                    return;
+
+                }
+
+
+
+                // เก็บ VRM
+
+                app.currentVrm = vrm;
+
+
+
+                // หันหน้าเข้ากล้อง
+
+                vrm.scene.rotation.y = Math.PI;
 
 
 
                 // เพิ่มเข้า Scene
 
                 app.scene.add(
-
                     vrm.scene
-
                 );
 
 
@@ -99,18 +124,24 @@ app.scene.add(vrm.scene);
                 // Disable Culling
                 // --------------------------
 
-               vrm.scene.traverse((obj) => {
+                vrm.scene.traverse((obj)=>{
 
-    obj.frustumCulled = false;
 
-    if (obj.isMesh) {
+                    obj.frustumCulled = false;
 
-        obj.castShadow = true;
-        obj.receiveShadow = true;
 
-    }
+                    if(obj.isMesh){
 
-});
+                        obj.castShadow = true;
+
+                        obj.receiveShadow = true;
+
+                    }
+
+
+                });
+
+
 
 
                 // --------------------------
@@ -141,10 +172,12 @@ app.scene.add(vrm.scene);
 
 
 
+
                 console.log(
                     "VRM Loaded",
                     vrm
                 );
+
 
 
                 setStatus(
@@ -160,6 +193,7 @@ app.scene.add(vrm.scene);
                 resolve(vrm);
 
 
+
             },
 
 
@@ -173,6 +207,7 @@ app.scene.add(vrm.scene);
                     const percent =
 
                     (
+
                         progress.loaded /
 
                         progress.total *
@@ -187,9 +222,10 @@ app.scene.add(vrm.scene);
 
                         "Loading VRM",
 
-                        percent+"%"
+                        percent + "%"
 
                     );
+
 
                 }
 
@@ -210,6 +246,7 @@ app.scene.add(vrm.scene);
                 );
 
 
+
                 setStatus(
 
                     "โหลด Avatar ไม่สำเร็จ",
@@ -217,6 +254,7 @@ app.scene.add(vrm.scene);
                     "red"
 
                 );
+
 
 
                 reject(error);
