@@ -4,11 +4,17 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#0d6efd">
 
     <title>AI Avatar Receptionist</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+          href="style.css">
 
 </head>
 
@@ -16,19 +22,28 @@
 
     <div id="app">
 
-        <!-- พื้นที่แสดง Avatar -->
+        <!-- Avatar -->
         <canvas id="avatarCanvas"></canvas>
 
-        <!-- สถานะของ AI -->
+        <!-- Status -->
         <div id="status" class="status">
-            <span id="statusDot" class="dot"></span>
-            <span id="statusText">กำลังโหลด Avatar...</span>
+
+            <span id="statusDot"
+                  class="dot"></span>
+
+            <span id="statusText">
+
+                กำลังโหลด Avatar...
+
+            </span>
+
         </div>
 
     </div>
 
-    <!-- โหลดไฟล์ควบคุม VRM -->
-    <script type="module" src="vrm.js"></script>
+    <!-- Main Module -->
+    <script type="module"
+            src="./vrm.js"></script>
 
 </body>
 
