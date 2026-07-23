@@ -96,12 +96,18 @@ app.scene.add(vrm.scene);
                 // Disable Culling
                 // --------------------------
 
-                vrm.scene.traverse((obj)=>{
+               vrm.scene.traverse((obj) => {
 
-                    obj.frustumCulled = false;
+    obj.frustumCulled = false;
 
-                });
+    if (obj.isMesh) {
 
+        obj.castShadow = true;
+        obj.receiveShadow = true;
+
+    }
+
+});
 
 
                 // --------------------------
