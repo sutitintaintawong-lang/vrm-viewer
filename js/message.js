@@ -41,6 +41,8 @@ export function initMessageAPI(app) {
 
             if(!data) return;
 
+            if(typeof data !== "object") return;
+
 
 
             console.log(
@@ -52,23 +54,17 @@ export function initMessageAPI(app) {
 
             switch(data.type){
 
-case "emotion":
+
+                case "emotion":
+
+                    setEmotion(
+                        app,
+                        data.value
+                    );
+
+                    break;
 
 
-    setEmotion(
-
-        app,
-
-        data.value
-
-    );
-
-
-    break;
-                    
-                // ----------------------
-                // Look Front
-                // ----------------------
 
                 case "lookFront":
 
@@ -78,10 +74,6 @@ case "emotion":
 
 
 
-                // ----------------------
-                // Look Left
-                // ----------------------
-
                 case "lookLeft":
 
                     lookLeft(app);
@@ -89,10 +81,6 @@ case "emotion":
                     break;
 
 
-
-                // ----------------------
-                // Look Right
-                // ----------------------
 
                 case "lookRight":
 
@@ -102,38 +90,34 @@ case "emotion":
 
 
 
-                // ----------------------
-                // Speak
-                // ----------------------
-
                 case "speak":
 
 
+                    if(data.emotion){
+
+                        setEmotion(
+                            app,
+                            data.emotion
+                        );
+
+                    }
+
+
                     setStatus(
-
                         "กำลังตอบ...",
-
                         "#9c27b0"
-
                     );
 
 
                     await speak(
-
                         app,
-
                         data.text || ""
-
                     );
 
 
-
                     setStatus(
-
                         "พร้อมใช้งาน",
-
                         "#00cc66"
-
                     );
 
 
@@ -141,21 +125,31 @@ case "emotion":
 
 
 
-                // ----------------------
-                // Status
-                // ----------------------
+                case "stopSpeak":
 
-                case "status":
+
+                    speechSynthesis.cancel();
+
+
+                    app.speaking = false;
 
 
                     setStatus(
-
-                        data.text,
-
-                        data.color
-
+                        "พร้อมใช้งาน",
+                        "#00cc66"
                     );
 
+
+                    break;
+
+
+
+                case "status":
+
+                    setStatus(
+                        data.text,
+                        data.color
+                    );
 
                     break;
 
@@ -165,11 +159,8 @@ case "emotion":
 
 
                     console.log(
-
                         "Unknown message:",
-
                         data.type
-
                     );
 
 
@@ -177,7 +168,6 @@ case "emotion":
 
 
         }
-
 
     );
 
