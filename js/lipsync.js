@@ -7,6 +7,10 @@ import {
     LIPSYNC
 } from "./config.js";
 
+import {
+    VRMExpressionPresetName
+} from "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3/lib/three-vrm.module.min.js";
+
 
 // ======================================
 // Start Lip Sync
@@ -152,13 +156,10 @@ function setMouth(app,value){
 
 
 
-    expressionManager.setValue(
-
-        "aa",
-
-        value
-
-    );
+expressionManager.setValue(
+    VRMExpressionPresetName.Aa,
+    value
+);
 
 
 }
