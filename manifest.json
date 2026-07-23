@@ -1,8 +1,9 @@
 {
-  "name": "AI E-Service",
-  "short_name": "E-Service",
-  "description": "AI E-Service องค์การบริหารส่วนตำบลแม่เปา",
+  "name": "AI Avatar Receptionist - AI E-Service",
+  "short_name": "AI Avatar",
+  "description": "AI E-Service พร้อมผู้ช่วย Avatar AI องค์การบริหารส่วนตำบลแม่เปา",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0d6efd",
@@ -11,14 +12,16 @@
 
   "icons": [
     {
-      "src": "icons/icon-192.png",
+      "src": "./icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "icons/icon-512.png",
+      "src": "./icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
