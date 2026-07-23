@@ -15,7 +15,13 @@ import {
 export function updateLook(app) {
 
 
-    if (!app.currentVrm) return;
+if (
+    !app.currentVrm ||
+    !app.headBone ||
+    !app.neckBone
+) {
+    return;
+}
 
 
 
