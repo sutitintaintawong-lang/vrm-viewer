@@ -160,6 +160,26 @@ expressionManager.setValue(
     VRMExpressionPresetName.Aa,
     value
 );
+    } catch {
 
+        try {
+
+            expressionManager.setValue(
+                "aa",
+                value
+            );
+
+        } catch {
+
+            expressionManager.setValue(
+                "A",
+                value
+            );
+
+        }
+
+    }
 
 }
+
+
