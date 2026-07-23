@@ -1,99 +1,200 @@
 // ======================================
 // AI Avatar Framework v2.0
-// Scene
+// Scene System
 // ======================================
 
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js";
-import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js";
 
-import {
-    CAMERA,
-    RENDERER
-} from "./config.js";
+import * as THREE from "three";
 
-export function initScene() {
 
-    const canvas = document.getElementById("avatarCanvas");
 
-    const scene = new THREE.Scene();
+// ======================================
+// Init Scene
+// ======================================
 
-    const camera = new THREE.PerspectiveCamera(
-        CAMERA.fov,
-        window.innerWidth / window.innerHeight,
-        CAMERA.near,
-        CAMERA.far
+export function initScene(){
+
+
+    const canvas =
+    document.getElementById(
+        "avatarCanvas"
     );
+
+
+
+    const scene =
+    new THREE.Scene();
+
+
+
+    scene.background = null;
+
+
+
+    // Camera
+
+    const camera =
+    new THREE.PerspectiveCamera(
+
+        30,
+
+        window.innerWidth /
+        window.innerHeight,
+
+        0.1,
+
+        100
+
+    );
+
+
+
+    /*
+       กล้องอยู่หน้า Avatar
+       VRM หน้าอยู่ -Z
+    */
 
     camera.position.set(
-        CAMERA.position.x,
-        CAMERA.position.y,
-        CAMERA.position.z
+
+        0,
+
+        1.45,
+
+        -1.5
+
     );
 
-    const renderer = new THREE.WebGLRenderer({
+
+
+    camera.lookAt(
+
+        0,
+
+        1.35,
+
+        0
+
+    );
+
+
+
+
+
+    // Renderer
+
+    const renderer =
+    new THREE.WebGLRenderer({
+
         canvas,
-        alpha: RENDERER.alpha,
-        antialias: RENDERER.antialias
+
+        alpha:true,
+
+        antialias:true
+
     });
 
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-    const controls = new OrbitControls(
-        camera,
-        renderer.domElement
+
+    renderer.setPixelRatio(
+        window.devicePixelRatio
     );
 
-    controls.enablePan = false;
-    controls.enableRotate = false;
-    controls.enableZoom = false;
 
-    const ambient = new THREE.AmbientLight(0xffffff, 2);
-    scene.add(ambient);
+    renderer.setSize(
 
-    const directional = new THREE.DirectionalLight(0xffffff, 1.5);
-    directional.position.set(1, 2, 2);
-    scene.add(directional);
+        window.innerWidth,
 
-    const fill = new THREE.DirectionalLight(0xffffff, 0.8);
-    fill.position.set(-2, 1, 1);
-    scene.add(fill);
+        window.innerHeight
 
-    const clock = new THREE.Clock();
+    );
 
-    const app = {
+
+    renderer.outputColorSpace =
+    THREE.SRGBColorSpace;
+
+
+
+
+    // Light
+
+    const light =
+    new THREE.DirectionalLight(
+
+        0xffffff,
+
+        2
+
+    );
+
+
+    light.position.set(
+
+        0,
+
+        3,
+
+        -3
+
+    );
+
+
+    scene.add(light);
+
+
+
+    scene.add(
+        new THREE.AmbientLight(
+            0xffffff,
+            1
+        )
+    );
+
+
+
+
+    window.addEventListener(
+        "resize",
+        ()=>{
+
+
+            camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
+
+
+            camera.updateProjectionMatrix();
+
+
+
+            renderer.setSize(
+
+                window.innerWidth,
+
+                window.innerHeight
+
+            );
+
+
+        }
+
+    );
+
+
+
+
+    return {
+
+
         scene,
+
         camera,
+
         renderer,
-        controls,
-        clock,
-        canvas,
 
-        currentVrm: null,
-        headBone: null,
-        neckBone: null,
+        currentVrm:null
 
-        mouse: {
-            x: 0,
-            y: 0
-        },
 
-        speaking: false,
-        emotion: "neutral"
     };
 
-    window.addEventListener("resize", () => {
 
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize(
-            window.innerWidth,
-            window.innerHeight
-        );
-
-    });
-
-    return app;
 }
