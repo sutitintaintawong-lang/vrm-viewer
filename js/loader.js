@@ -44,7 +44,7 @@ export function loadVRM(app) {
 
 
 const vrm = gltf.userData.vrm;
-
+vrm.scene.rotation.y = Math.PI;
 app.currentVrm = vrm;
 
 // หันหน้าเข้ากล้อง
