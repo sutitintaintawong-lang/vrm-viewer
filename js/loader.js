@@ -3,13 +3,14 @@
 // VRM Loader
 // ======================================
 
-import { GLTFLoader } 
-from "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js";
+import * as THREE from 
+"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js";
 
+import { GLTFLoader } from
+"https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/GLTFLoader.js";
 
-import { VRMLoaderPlugin } 
-from "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3.4.0/lib/three-vrm.module.js";
-
+import { VRMLoaderPlugin } from
+"https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3.4.2/lib/three-vrm.module.js";
 
 import {
     AVATAR
