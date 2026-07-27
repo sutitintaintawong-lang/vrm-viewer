@@ -22,7 +22,7 @@ export const CAMERA = {
 
         y: 1.45,
 
-        z: 0.65
+        z: 1.6
 
     }
 
@@ -38,7 +38,9 @@ export const RENDERER = {
 
     alpha: true,
 
-    antialias: true
+    antialias: true,
+
+    pixelRatio: window.devicePixelRatio
 
 };
 
@@ -50,13 +52,24 @@ export const RENDERER = {
 
 export const AVATAR = {
 
-    url: "./avatar.vrm",
+    // GitHub Pages
+    url: "avatar.vrm",
 
     position: {
 
         x: 0,
 
         y: -1.15,
+
+        z: 0
+
+    },
+
+    rotation: {
+
+        x: 0,
+
+        y: 0,
 
         z: 0
 
