@@ -3,60 +3,91 @@
 // Scene System
 // ======================================
 
-import * as THREE from "three";
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js";
+
+import {
+    CAMERA,
+    RENDERER
+} from "./config.js";
 
 export function initScene() {
 
     const canvas = document.getElementById("avatarCanvas");
 
-    // Scene
     const scene = new THREE.Scene();
     scene.background = null;
 
-    // Camera
     const camera = new THREE.PerspectiveCamera(
-        30,
+        CAMERA.fov,
         window.innerWidth / window.innerHeight,
-        0.1,
-        100
+        CAMERA.near,
+        CAMERA.far
     );
 
-    // กล้องอยู่ด้านหน้าของ Avatar
-    camera.position.set(0, 1.45, 1.6);
-    camera.lookAt(0, 1.35, 0);
+    camera.position.set(
+        CAMERA.position.x,
+        CAMERA.position.y,
+        CAMERA.position.z
+    );
 
-    // Renderer
+    camera.lookAt(0, 1.3, 0);
+
     const renderer = new THREE.WebGLRenderer({
         canvas,
-        alpha: true,
-        antialias: true
+        alpha: RENDERER.alpha,
+        antialias: RENDERER.antialias
     });
 
-    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(RENDERER.pixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-    // Clock (animation.js ใช้)
     const clock = new THREE.Clock();
-
-    // Mouse (mouse.js ใช้)
     const mouse = new THREE.Vector2();
-
-    // Raycaster (ไว้ใช้ต่อใน LookAt / Click)
     const raycaster = new THREE.Raycaster();
 
-    // Light
-    const ambient = new THREE.AmbientLight(0xffffff, 1.2);
-    scene.add(ambient);
+    // Ambient
+    scene.add(
+        new THREE.AmbientLight(
+            0xffffff,
+            2
+        )
+    );
 
-    const directional = new THREE.DirectionalLight(0xffffff, 2);
-    directional.position.set(0, 3, 3);
-    scene.add(directional);
+    // Main Light
+    const light = new THREE.DirectionalLight(
+        0xffffff,
+        3
+    );
 
-    // Resize
+    light.position.set(
+        0,
+        3,
+        3
+    );
+
+    scene.add(light);
+
+    // Fill Light
+    const fill = new THREE.DirectionalLight(
+        0xffffff,
+        1
+    );
+
+    fill.position.set(
+        0,
+        2,
+        -3
+    );
+
+    scene.add(fill);
+
     window.addEventListener("resize", () => {
 
-        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
+
         camera.updateProjectionMatrix();
 
         renderer.setSize(
@@ -82,6 +113,7 @@ export function initScene() {
         neckBone: null,
 
         mixer: null,
+
         actions: {},
 
         delta: 0
