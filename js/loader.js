@@ -91,7 +91,14 @@ export function loadVRM(app){
                     vrm.scene
                 );
 
+console.log("Children:", app.scene.children);
 
+const box = new THREE.Box3().setFromObject(vrm.scene);
+console.log("Bounding Box:", box);
+
+const center = new THREE.Vector3();
+box.getCenter(center);
+console.log("Center:", center);
 
                 // Position
 
