@@ -113,7 +113,8 @@ console.log("Center:", center);
 
                 );
 
-
+// หมุนให้หันหน้าหากล้อง
+vrm.scene.rotation.y = Math.PI;
 
                 // Scale
 
