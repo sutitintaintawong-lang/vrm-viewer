@@ -3,7 +3,7 @@
 // VRM Loader
 // ======================================
 
-import * as THREE from 
+import * as THREE from
 "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js";
 
 import { GLTFLoader } from
@@ -16,10 +16,82 @@ import {
     AVATAR
 } from "./config.js";
 
-
 import {
     setStatus
 } from "./status.js";
+
+
+// ======================================
+// Initial Idle Pose
+// ======================================
+
+function applyInitialPose(vrm){
+
+    if(!vrm || !vrm.humanoid) return;
+
+    const leftUpperArm =
+        vrm.humanoid.getNormalizedBoneNode("leftUpperArm");
+
+    const rightUpperArm =
+        vrm.humanoid.getNormalizedBoneNode("rightUpperArm");
+
+    const leftLowerArm =
+        vrm.humanoid.getNormalizedBoneNode("leftLowerArm");
+
+    const rightLowerArm =
+        vrm.humanoid.getNormalizedBoneNode("rightLowerArm");
+
+    const leftHand =
+        vrm.humanoid.getNormalizedBoneNode("leftHand");
+
+    const rightHand =
+        vrm.humanoid.getNormalizedBoneNode("rightHand");
+
+
+    // แขนบน
+    if(leftUpperArm){
+
+        leftUpperArm.rotation.z = 0.45;
+        leftUpperArm.rotation.x = 0.05;
+
+    }
+
+    if(rightUpperArm){
+
+        rightUpperArm.rotation.z = -0.45;
+        rightUpperArm.rotation.x = 0.05;
+
+    }
+
+
+    // แขนล่าง
+    if(leftLowerArm){
+
+        leftLowerArm.rotation.z = -0.15;
+
+    }
+
+    if(rightLowerArm){
+
+        rightLowerArm.rotation.z = 0.15;
+
+    }
+
+
+    // มือ
+    if(leftHand){
+
+        leftHand.rotation.x = 0.10;
+
+    }
+
+    if(rightHand){
+
+        rightHand.rotation.x = 0.10;
+
+    }
+
+}
 
 
 
@@ -29,13 +101,9 @@ import {
 
 export function loadVRM(app){
 
-
     return new Promise((resolve,reject)=>{
 
-
         const loader = new GLTFLoader();
-
-
 
         loader.register((parser)=>{
 
@@ -43,34 +111,22 @@ export function loadVRM(app){
 
         });
 
-
-
         loader.load(
 
             AVATAR.url,
 
-
             (gltf)=>{
-
 
                 const vrm = gltf.userData.vrm;
 
-
                 if(!vrm){
 
-                    reject(
-                        "VRM not found"
-                    );
-
+                    reject("VRM not found");
                     return;
 
                 }
 
-
-
                 app.currentVrm = vrm;
-
-
 
                 /*
                     VRM มาตรฐาน:
@@ -86,20 +142,18 @@ export function loadVRM(app){
                     0
                 );
 
-
-
                 app.scene.add(
                     vrm.scene
                 );
 
-console.log("Children:", app.scene.children);
+                console.log("Children:", app.scene.children);
 
-const box = new THREE.Box3().setFromObject(vrm.scene);
-console.log("Bounding Box:", box);
+                const box = new THREE.Box3().setFromObject(vrm.scene);
+                console.log("Bounding Box:", box);
 
-const center = new THREE.Vector3();
-box.getCenter(center);
-console.log("Center:", center);
+                const center = new THREE.Vector3();
+                box.getCenter(center);
+                console.log("Center:", center);
 
                 // Position
 
@@ -113,7 +167,6 @@ console.log("Center:", center);
 
                 );
 
-
                 // Scale
 
                 vrm.scene.scale.setScalar(
@@ -122,96 +175,69 @@ console.log("Center:", center);
 
                 );
 
-
-
                 // Disable culling
 
                 vrm.scene.traverse((obj)=>{
 
-
                     obj.frustumCulled = false;
-
 
                     if(obj.isMesh){
 
                         obj.castShadow = true;
-
                         obj.receiveShadow = true;
 
                     }
 
-
                 });
-
-
 
                 // Bones
 
                 if(vrm.humanoid){
 
-
                     app.headBone =
-
-                    vrm.humanoid
-                    .getNormalizedBoneNode(
+                    vrm.humanoid.getNormalizedBoneNode(
                         "head"
                     );
 
-
                     app.neckBone =
-
-                    vrm.humanoid
-                    .getNormalizedBoneNode(
+                    vrm.humanoid.getNormalizedBoneNode(
                         "neck"
                     );
 
-
                 }
 
+                // ======================================
+                // Apply Initial Idle Pose
+                // ======================================
 
+                applyInitialPose(vrm);
 
                 console.log(
                     "VRM Loaded",
                     vrm
                 );
 
-
-
                 setStatus(
                     "พร้อมใช้งาน",
                     "#00cc66"
                 );
 
-
-
                 resolve(vrm);
-
-
 
             },
 
-
             undefined,
-
 
             (error)=>{
 
-
-                console.error(
-                    error
-                );
-
+                console.error(error);
 
                 reject(error);
 
-
             }
-
 
         );
 
-
     });
-
 
 }
