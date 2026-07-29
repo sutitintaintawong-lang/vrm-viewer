@@ -38,6 +38,23 @@ function applyInitialPose(vrm){
     }
 
 
+    // ป้องกัน VRM Update ทับ Pose
+    vrm.humanoid.autoUpdateHumanBones = false;
+
+
+
+    const leftShoulder =
+        vrm.humanoid.getRawBoneNode(
+            "leftShoulder"
+        );
+
+
+    const rightShoulder =
+        vrm.humanoid.getRawBoneNode(
+            "rightShoulder"
+        );
+
+
     const leftUpperArm =
         vrm.humanoid.getRawBoneNode(
             "leftUpperArm"
@@ -62,81 +79,82 @@ function applyInitialPose(vrm){
         );
 
 
-    const leftHand =
-        vrm.humanoid.getRawBoneNode(
-            "leftHand"
-        );
-
-
-    const rightHand =
-        vrm.humanoid.getRawBoneNode(
-            "rightHand"
-        );
+    console.log(
+        "Pose Bones",
+        {
+            leftShoulder,
+            rightShoulder,
+            leftUpperArm,
+            rightUpperArm,
+            leftLowerArm,
+            rightLowerArm
+        }
+    );
 
 
 
     // ======================================
-    // Shoulder / Upper Arm
-    // ลดแขนจาก A-Pose
+    // Shoulder
+    // ======================================
+
+    if(leftShoulder){
+
+        leftShoulder.rotation.z = 0.10;
+
+    }
+
+
+    if(rightShoulder){
+
+        rightShoulder.rotation.z = -0.10;
+
+    }
+
+
+
+    // ======================================
+    // Upper Arm
+    // ลดจาก A-Pose
     // ======================================
 
     if(leftUpperArm){
 
-        leftUpperArm.rotation.z = 0.35;
-        leftUpperArm.rotation.x = 0.10;
+        leftUpperArm.rotation.z = 0.65;
+        leftUpperArm.rotation.x = 0.15;
 
     }
 
 
     if(rightUpperArm){
 
-        rightUpperArm.rotation.z = -0.35;
-        rightUpperArm.rotation.x = 0.10;
+        rightUpperArm.rotation.z = -0.65;
+        rightUpperArm.rotation.x = 0.15;
 
     }
 
 
 
     // ======================================
-    // Elbow
+    // Lower Arm
     // ======================================
 
     if(leftLowerArm){
 
-        leftLowerArm.rotation.z = -0.12;
+        leftLowerArm.rotation.z = -0.25;
 
     }
 
 
     if(rightLowerArm){
 
-        rightLowerArm.rotation.z = 0.12;
-
-    }
-
-
-
-    // ======================================
-    // Hands
-    // ======================================
-
-    if(leftHand){
-
-        leftHand.rotation.x = 0.10;
-
-    }
-
-
-    if(rightHand){
-
-        rightHand.rotation.x = 0.10;
+        rightLowerArm.rotation.z = 0.25;
 
     }
 
 
 
     console.log(
-        "Initial Idle Pose Applied"
+        "Idle Pose Applied"
     );
 
 }
@@ -148,6 +166,7 @@ function applyInitialPose(vrm){
 // ======================================
 
 export function loadVRM(app){
+
 
     return new Promise((resolve,reject)=>{
 
@@ -172,7 +191,8 @@ export function loadVRM(app){
             (gltf)=>{
 
 
-                const vrm = gltf.userData.vrm;
+                const vrm =
+                    gltf.userData.vrm;
 
 
 
@@ -193,10 +213,10 @@ export function loadVRM(app){
 
 
                 /*
-                    VRM มาตรฐาน:
-                    หน้า Avatar อยู่ทาง -Z
+                    VRM Front:
+                    -Z
 
-                    ไม่หมุนโมเดล
+                    ไม่หมุน Avatar
                 */
 
 
@@ -297,7 +317,9 @@ export function loadVRM(app){
 
 
 
+                // ======================================
                 // Bones
+                // ======================================
 
                 if(vrm.humanoid){
 
