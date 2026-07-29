@@ -38,7 +38,7 @@ function applyInitialPose(vrm){
     }
 
 
-    // ป้องกัน VRM Update ทับ Pose
+    // ป้องกัน VRM เขียนทับ Pose
     vrm.humanoid.autoUpdateHumanBones = false;
 
 
@@ -99,14 +99,26 @@ function applyInitialPose(vrm){
 
     if(leftShoulder){
 
-        leftShoulder.rotation.z = 0.10;
+        leftShoulder.quaternion.setFromEuler(
+            new THREE.Euler(
+                0,
+                0,
+                0.10
+            )
+        );
 
     }
 
 
     if(rightShoulder){
 
-        rightShoulder.rotation.z = -0.10;
+        rightShoulder.quaternion.setFromEuler(
+            new THREE.Euler(
+                0,
+                0,
+                -0.10
+            )
+        );
 
     }
 
@@ -114,21 +126,31 @@ function applyInitialPose(vrm){
 
     // ======================================
     // Upper Arm
-    // ลดจาก A-Pose
+    // ลด A-Pose
     // ======================================
 
     if(leftUpperArm){
 
-        leftUpperArm.rotation.z = 0.65;
-        leftUpperArm.rotation.x = 0.15;
+        leftUpperArm.quaternion.setFromEuler(
+            new THREE.Euler(
+                0.15,
+                0,
+                0.75
+            )
+        );
 
     }
 
 
     if(rightUpperArm){
 
-        rightUpperArm.rotation.z = -0.65;
-        rightUpperArm.rotation.x = 0.15;
+        rightUpperArm.quaternion.setFromEuler(
+            new THREE.Euler(
+                0.15,
+                0,
+                -0.75
+            )
+        );
 
     }
 
@@ -140,14 +162,26 @@ function applyInitialPose(vrm){
 
     if(leftLowerArm){
 
-        leftLowerArm.rotation.z = -0.25;
+        leftLowerArm.quaternion.setFromEuler(
+            new THREE.Euler(
+                0,
+                0,
+                -0.35
+            )
+        );
 
     }
 
 
     if(rightLowerArm){
 
-        rightLowerArm.rotation.z = 0.25;
+        rightLowerArm.quaternion.setFromEuler(
+            new THREE.Euler(
+                0,
+                0,
+                0.35
+            )
+        );
 
     }
 
@@ -350,6 +384,9 @@ export function loadVRM(app){
                 // ======================================
 
                 applyInitialPose(vrm);
+
+
+                vrm.scene.updateMatrixWorld(true);
 
 
 
