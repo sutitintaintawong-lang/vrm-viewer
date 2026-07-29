@@ -24,13 +24,21 @@ export function initScene() {
         CAMERA.far
     );
 
+    // ----------------------------------
+    // Camera
+    // ----------------------------------
+
     camera.position.set(
-        CAMERA.position.x,
-        CAMERA.position.y,
-        CAMERA.position.z
+        0,
+        1.45,
+        -1.6
     );
 
-    camera.lookAt(0, 1.3, 0);
+    camera.lookAt(
+        0,
+        1.3,
+        0
+    );
 
     const renderer = new THREE.WebGLRenderer({
         canvas,
@@ -46,7 +54,7 @@ export function initScene() {
     const mouse = new THREE.Vector2();
     const raycaster = new THREE.Raycaster();
 
-    // Ambient
+    // Ambient Light
     scene.add(
         new THREE.AmbientLight(
             0xffffff,
@@ -54,7 +62,7 @@ export function initScene() {
         )
     );
 
-    // Main Light
+    // Front Light
     const light = new THREE.DirectionalLight(
         0xffffff,
         3
@@ -63,12 +71,12 @@ export function initScene() {
     light.position.set(
         0,
         3,
-        3
+        -3
     );
 
     scene.add(light);
 
-    // Fill Light
+    // Back Fill
     const fill = new THREE.DirectionalLight(
         0xffffff,
         1
@@ -77,7 +85,7 @@ export function initScene() {
     fill.position.set(
         0,
         2,
-        -3
+        3
     );
 
     scene.add(fill);
