@@ -82,7 +82,7 @@ export function loadVRM(app){
 
                 vrm.scene.rotation.set(
                     0,
-                    -Math.PI,
+                    Math.PI / 2,
                     0
                 );
 
