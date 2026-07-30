@@ -59,7 +59,7 @@ export const AVATAR = {
 
         x: 0,
 
-        y: 0.60,
+        y: 0.35,
 
         z: 0
 
