@@ -7,6 +7,7 @@ import { updateLook } from "./look.js";
 import { updateBlink } from "./blink.js";
 import { updateIdle } from "./idle.js";
 import { updateLipSync } from "./lipsync.js";
+import { applyIdlePose } from "./pose.js";
 
 
 // ======================================
@@ -26,7 +27,9 @@ export function startAnimation(app) {
 
         const delta = app.clock.getDelta();
 
+        // ======================================
         // Update VRM
+        // ======================================
 
         if (app.currentVrm) {
 
@@ -34,9 +37,14 @@ export function startAnimation(app) {
                 app.currentVrm.update(delta);
             }
 
+            // บังคับท่า Idle ทุกเฟรม
+            applyIdlePose(app.currentVrm);
+
         }
 
+        // ======================================
         // Look
+        // ======================================
 
         try {
             updateLook(app);
@@ -44,7 +52,9 @@ export function startAnimation(app) {
             console.warn("Look Error", e);
         }
 
+        // ======================================
         // Blink
+        // ======================================
 
         try {
             updateBlink(app, delta);
@@ -52,7 +62,9 @@ export function startAnimation(app) {
             console.warn("Blink Error", e);
         }
 
+        // ======================================
         // Idle
+        // ======================================
 
         try {
             updateIdle(app, delta);
@@ -60,7 +72,9 @@ export function startAnimation(app) {
             console.warn("Idle Error", e);
         }
 
+        // ======================================
         // Lip Sync
+        // ======================================
 
         try {
             updateLipSync(app, delta);
@@ -68,7 +82,9 @@ export function startAnimation(app) {
             console.warn("LipSync Error", e);
         }
 
+        // ======================================
         // Render
+        // ======================================
 
         app.renderer.render(
             app.scene,
