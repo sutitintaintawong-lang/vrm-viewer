@@ -7,95 +7,139 @@ export function applyIdlePose(vrm) {
 
     if (!vrm || !vrm.humanoid) return;
 
+    // ==================================
+    // Get Bones
+    // ==================================
+
     const leftUpperArm =
-        vrm.humanoid.getNormalizedBoneNode("leftUpperArm");
+        vrm.humanoid.getNormalizedBoneNode(
+            "leftUpperArm"
+        );
 
     const rightUpperArm =
-        vrm.humanoid.getNormalizedBoneNode("rightUpperArm");
+        vrm.humanoid.getNormalizedBoneNode(
+            "rightUpperArm"
+        );
 
     const leftLowerArm =
-        vrm.humanoid.getNormalizedBoneNode("leftLowerArm");
+        vrm.humanoid.getNormalizedBoneNode(
+            "leftLowerArm"
+        );
 
     const rightLowerArm =
-        vrm.humanoid.getNormalizedBoneNode("rightLowerArm");
+        vrm.humanoid.getNormalizedBoneNode(
+            "rightLowerArm"
+        );
 
     const leftHand =
-        vrm.humanoid.getNormalizedBoneNode("leftHand");
+        vrm.humanoid.getNormalizedBoneNode(
+            "leftHand"
+        );
 
     const rightHand =
-        vrm.humanoid.getNormalizedBoneNode("rightHand");
+        vrm.humanoid.getNormalizedBoneNode(
+            "rightHand"
+        );
 
 
-    // -----------------------------
-    // Upper Arm
-    // -----------------------------
+    // ==================================
+    // PHA N O M MUE
+    // ท่าพนมมือไหว้
+    // ==================================
+
+    // ----------------------------------
+    // Left Upper Arm
+    // ----------------------------------
 
     if (leftUpperArm) {
 
         leftUpperArm.rotation.set(
             0.15,
-            0.00,
-            0.95
+            -0.15,
+            0.45
         );
 
     }
+
+
+    // ----------------------------------
+    // Right Upper Arm
+    // ----------------------------------
 
     if (rightUpperArm) {
 
         rightUpperArm.rotation.set(
             0.15,
-            0.00,
-            -0.95
+            0.15,
+            -0.45
         );
 
     }
 
 
-    // -----------------------------
-    // Lower Arm
-    // -----------------------------
+    // ==================================
+    // Lower Arms
+    // ==================================
+
+    // ----------------------------------
+    // Left Lower Arm
+    // ----------------------------------
 
     if (leftLowerArm) {
 
         leftLowerArm.rotation.set(
+            -0.20,
             0.00,
-            0.00,
-            -0.30
+            -0.85
         );
 
     }
+
+
+    // ----------------------------------
+    // Right Lower Arm
+    // ----------------------------------
 
     if (rightLowerArm) {
 
         rightLowerArm.rotation.set(
+            -0.20,
             0.00,
-            0.00,
-            0.30
+            0.85
         );
 
     }
 
 
-    // -----------------------------
-    // Hand
-    // -----------------------------
+    // ==================================
+    // Hands
+    // ==================================
+
+    // ----------------------------------
+    // Left Hand
+    // ----------------------------------
 
     if (leftHand) {
 
         leftHand.rotation.set(
-            0.10,
             0.00,
-            0.00
+            0.00,
+            -0.15
         );
 
     }
 
+
+    // ----------------------------------
+    // Right Hand
+    // ----------------------------------
+
     if (rightHand) {
 
         rightHand.rotation.set(
-            0.10,
             0.00,
-            0.00
+            0.00,
+            0.15
         );
 
     }
