@@ -15,7 +15,13 @@ export function initScene() {
     const canvas = document.getElementById("avatarCanvas");
 
     const scene = new THREE.Scene();
+
+    // Transparent Background
     scene.background = null;
+
+    // ==================================
+    // Camera
+    // ==================================
 
     const camera = new THREE.PerspectiveCamera(
         CAMERA.fov,
@@ -24,14 +30,16 @@ export function initScene() {
         CAMERA.far
     );
 
-    // ----------------------------------
-    // Camera
-    // ----------------------------------
+    // ==================================
+    // ตำแหน่งกล้อง
+    // ==================================
+    // z = +1.6 คือมอง Avatar จากด้านหน้า
+    // ถ้าใช้ -1.6 จะกลายเป็นมองจากด้านหลัง
 
     camera.position.set(
         0,
         1.45,
-        -1.6
+        1.6
     );
 
     camera.lookAt(
@@ -40,33 +48,67 @@ export function initScene() {
         0
     );
 
+    // ==================================
+    // Renderer
+    // ==================================
+
     const renderer = new THREE.WebGLRenderer({
         canvas,
         alpha: RENDERER.alpha,
         antialias: RENDERER.antialias
     });
 
-    renderer.setPixelRatio(RENDERER.pixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.setPixelRatio(
+        RENDERER.pixelRatio
+    );
+
+    renderer.setSize(
+        window.innerWidth,
+        window.innerHeight
+    );
+
+    renderer.outputColorSpace =
+        THREE.SRGBColorSpace;
+
+    // ==================================
+    // Clock
+    // ==================================
 
     const clock = new THREE.Clock();
+
+    // ==================================
+    // Mouse
+    // ==================================
+
     const mouse = new THREE.Vector2();
+
+    // ==================================
+    // Raycaster
+    // ==================================
+
     const raycaster = new THREE.Raycaster();
 
+    // ==================================
     // Ambient Light
-    scene.add(
+    // ==================================
+
+    const ambientLight =
         new THREE.AmbientLight(
             0xffffff,
             2
-        )
-    );
+        );
 
+    scene.add(ambientLight);
+
+    // ==================================
     // Front Light
-    const light = new THREE.DirectionalLight(
-        0xffffff,
-        3
-    );
+    // ==================================
+
+    const light =
+        new THREE.DirectionalLight(
+            0xffffff,
+            3
+        );
 
     light.position.set(
         0,
@@ -76,11 +118,15 @@ export function initScene() {
 
     scene.add(light);
 
+    // ==================================
     // Back Fill
-    const fill = new THREE.DirectionalLight(
-        0xffffff,
-        1
-    );
+    // ==================================
+
+    const fill =
+        new THREE.DirectionalLight(
+            0xffffff,
+            1
+        );
 
     fill.position.set(
         0,
@@ -90,39 +136,71 @@ export function initScene() {
 
     scene.add(fill);
 
-    window.addEventListener("resize", () => {
+    // ==================================
+    // Resize
+    // ==================================
 
-        camera.aspect =
-            window.innerWidth /
-            window.innerHeight;
+    window.addEventListener(
+        "resize",
+        () => {
 
-        camera.updateProjectionMatrix();
+            camera.aspect =
+                window.innerWidth /
+                window.innerHeight;
 
-        renderer.setSize(
-            window.innerWidth,
-            window.innerHeight
-        );
+            camera.updateProjectionMatrix();
 
-    });
+            renderer.setSize(
+                window.innerWidth,
+                window.innerHeight
+            );
+
+        }
+    );
+
+    // ==================================
+    // Return Scene System
+    // ==================================
 
     return {
 
         scene,
+
         camera,
+
         renderer,
 
         clock,
+
         mouse,
+
         raycaster,
+
+        // ==================================
+        // VRM
+        // ==================================
 
         currentVrm: null,
 
+        // ==================================
+        // Bones
+        // ==================================
+
         headBone: null,
+
         neckBone: null,
+
+        // ==================================
+        // Animation
+        // ==================================
 
         mixer: null,
 
         actions: {},
+
+        // ==================================
+        // Delta Time
+        // ==================================
 
         delta: 0
 
