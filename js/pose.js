@@ -1,6 +1,7 @@
 // ======================================
 // AI Avatar Framework v2.0
 // Pose System
+// ท่าพนมมือไหว้
 // ======================================
 
 export function applyIdlePose(vrm) {
@@ -45,7 +46,10 @@ export function applyIdlePose(vrm) {
 
     // ==================================
     // LEFT UPPER ARM
-    // แขนซ้ายยกเข้าหาลำตัว
+    // ไหล่ซ้าย
+    //
+    // กลับด้านจากท่าเดิม
+    // ยกแขนขึ้นและหมุนเข้าหาลำตัว
     // ==================================
 
     if (leftUpperArm) {
@@ -55,7 +59,7 @@ export function applyIdlePose(vrm) {
         leftUpperArm.rotation.set(
             0.00,
             0.00,
-            0.55
+            -0.85
         );
 
     }
@@ -63,7 +67,10 @@ export function applyIdlePose(vrm) {
 
     // ==================================
     // RIGHT UPPER ARM
-    // แขนขวายกเข้าหาลำตัว
+    // ไหล่ขวา
+    //
+    // กลับด้านจากท่าเดิม
+    // ยกแขนขึ้นและหมุนเข้าหาลำตัว
     // ==================================
 
     if (rightUpperArm) {
@@ -73,7 +80,7 @@ export function applyIdlePose(vrm) {
         rightUpperArm.rotation.set(
             0.00,
             0.00,
-            -0.55
+            0.85
         );
 
     }
@@ -81,7 +88,9 @@ export function applyIdlePose(vrm) {
 
     // ==================================
     // LEFT LOWER ARM
-    // ท่อนแขนซ้ายพับเข้าหาหน้าอก
+    // ท่อนแขนซ้าย
+    //
+    // พับขึ้นเข้าหาหน้าอก
     // ==================================
 
     if (leftLowerArm) {
@@ -89,9 +98,9 @@ export function applyIdlePose(vrm) {
         leftLowerArm.rotation.order = "XYZ";
 
         leftLowerArm.rotation.set(
-            -0.10,
+            -0.15,
             0.00,
-            -1.20
+            -1.65
         );
 
     }
@@ -99,7 +108,9 @@ export function applyIdlePose(vrm) {
 
     // ==================================
     // RIGHT LOWER ARM
-    // ท่อนแขนขวาพับเข้าหาหน้าอก
+    // ท่อนแขนขวา
+    //
+    // พับขึ้นเข้าหาหน้าอก
     // ==================================
 
     if (rightLowerArm) {
@@ -107,9 +118,9 @@ export function applyIdlePose(vrm) {
         rightLowerArm.rotation.order = "XYZ";
 
         rightLowerArm.rotation.set(
-            -0.10,
+            -0.15,
             0.00,
-            1.20
+            1.65
         );
 
     }
@@ -117,7 +128,9 @@ export function applyIdlePose(vrm) {
 
     // ==================================
     // LEFT HAND
-    // มือซ้ายหันเข้าหากัน
+    // มือซ้าย
+    //
+    // หันฝ่ามือเข้าหามือขวา
     // ==================================
 
     if (leftHand) {
@@ -127,7 +140,7 @@ export function applyIdlePose(vrm) {
         leftHand.rotation.set(
             0.00,
             0.00,
-            -0.10
+            -0.15
         );
 
     }
@@ -135,7 +148,9 @@ export function applyIdlePose(vrm) {
 
     // ==================================
     // RIGHT HAND
-    // มือขวาหันเข้าหากัน
+    // มือขวา
+    //
+    // หันฝ่ามือเข้าหามือซ้าย
     // ==================================
 
     if (rightHand) {
@@ -145,7 +160,7 @@ export function applyIdlePose(vrm) {
         rightHand.rotation.set(
             0.00,
             0.00,
-            0.10
+            0.15
         );
 
     }
