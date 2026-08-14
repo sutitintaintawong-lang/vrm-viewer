@@ -12,51 +12,68 @@ import {
 
 export function initScene() {
 
-    const canvas = document.getElementById("avatarCanvas");
+    const canvas =
+        document.getElementById("avatarCanvas");
 
-    const scene = new THREE.Scene();
+    const scene =
+        new THREE.Scene();
 
+    // ==================================
     // Transparent Background
+    // ==================================
+
     scene.background = null;
+
 
     // ==================================
     // Camera
     // ==================================
 
-    const camera = new THREE.PerspectiveCamera(
-        CAMERA.fov,
-        window.innerWidth / window.innerHeight,
-        CAMERA.near,
-        CAMERA.far
-    );
+    const camera =
+        new THREE.PerspectiveCamera(
+            CAMERA.fov,
+            window.innerWidth /
+            window.innerHeight,
+            CAMERA.near,
+            CAMERA.far
+        );
+
 
     // ==================================
-    // ตำแหน่งกล้อง
+    // Camera Position
     // ==================================
-    // z = +1.6 คือมอง Avatar จากด้านหน้า
-    // ถ้าใช้ -1.6 จะกลายเป็นมองจากด้านหลัง
+    // ลดตำแหน่งกล้องลง
+    // เพื่อให้ Avatar อยู่ต่ำลงในหน้าจอ
 
     camera.position.set(
         0,
-        1.10,
+        0.95,
         1.6
     );
 
+
+    // ==================================
+    // Camera Look At
+    // ==================================
+    // ลดจุดมองลงจาก 1.30 → 1.15
+
     camera.lookAt(
         0,
-        1.3,
+        1.15,
         0
     );
+
 
     // ==================================
     // Renderer
     // ==================================
 
-    const renderer = new THREE.WebGLRenderer({
-        canvas,
-        alpha: RENDERER.alpha,
-        antialias: RENDERER.antialias
-    });
+    const renderer =
+        new THREE.WebGLRenderer({
+            canvas,
+            alpha: RENDERER.alpha,
+            antialias: RENDERER.antialias
+        });
 
     renderer.setPixelRatio(
         RENDERER.pixelRatio
@@ -70,23 +87,30 @@ export function initScene() {
     renderer.outputColorSpace =
         THREE.SRGBColorSpace;
 
+
     // ==================================
     // Clock
     // ==================================
 
-    const clock = new THREE.Clock();
+    const clock =
+        new THREE.Clock();
+
 
     // ==================================
     // Mouse
     // ==================================
 
-    const mouse = new THREE.Vector2();
+    const mouse =
+        new THREE.Vector2();
+
 
     // ==================================
     // Raycaster
     // ==================================
 
-    const raycaster = new THREE.Raycaster();
+    const raycaster =
+        new THREE.Raycaster();
+
 
     // ==================================
     // Ambient Light
@@ -98,7 +122,10 @@ export function initScene() {
             2
         );
 
-    scene.add(ambientLight);
+    scene.add(
+        ambientLight
+    );
+
 
     // ==================================
     // Front Light
@@ -116,7 +143,10 @@ export function initScene() {
         -3
     );
 
-    scene.add(light);
+    scene.add(
+        light
+    );
+
 
     // ==================================
     // Back Fill
@@ -134,7 +164,10 @@ export function initScene() {
         3
     );
 
-    scene.add(fill);
+    scene.add(
+        fill
+    );
+
 
     // ==================================
     // Resize
@@ -158,6 +191,7 @@ export function initScene() {
         }
     );
 
+
     // ==================================
     // Return Scene System
     // ==================================
@@ -176,11 +210,13 @@ export function initScene() {
 
         raycaster,
 
+
         // ==================================
         // VRM
         // ==================================
 
         currentVrm: null,
+
 
         // ==================================
         // Bones
@@ -190,6 +226,7 @@ export function initScene() {
 
         neckBone: null,
 
+
         // ==================================
         // Animation
         // ==================================
@@ -197,6 +234,7 @@ export function initScene() {
         mixer: null,
 
         actions: {},
+
 
         // ==================================
         // Delta Time
