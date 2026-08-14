@@ -38,7 +38,7 @@ export function initScene() {
 
     camera.position.set(
         0,
-        1.25,
+        1.10,
         1.6
     );
 
