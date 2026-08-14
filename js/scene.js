@@ -47,7 +47,7 @@ export function initScene() {
 
     camera.position.set(
         0,
-        1.35,
+        1.25,
         1.6
     );
 
@@ -59,7 +59,7 @@ export function initScene() {
 
     camera.lookAt(
         0,
-        1.35,
+        1.20,
         0
     );
 
