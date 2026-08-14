@@ -59,7 +59,7 @@ export function initScene() {
 
     camera.lookAt(
         0,
-        1.15,
+        1.4,
         0
     );
 
